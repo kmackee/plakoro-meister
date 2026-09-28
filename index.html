@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>プラコロ エントリーカード</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fffaf0;color:#251936;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}
+main{max-width:720px;margin:auto;padding:18px}.hero{background:#251936;color:white;border-radius:22px;padding:22px;margin-bottom:16px}
+.hero h1{margin:0;font-size:28px}.hero p{margin:7px 0 0;color:#d8f36a}.card{border:3px solid #251936;border-radius:20px;padding:16px;background:white;box-shadow:5px 5px 0 #251936;margin-bottom:16px}
+label{font-weight:800;display:block;margin-bottom:7px}select,button{font:inherit}select{width:100%;padding:10px;border:2px solid #251936;border-radius:12px;background:white}
+.faceControl{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:center;margin:7px 0}
+.faceControl.double{grid-template-columns:44px 1fr auto 44px 1fr}
+.previewIcon{display:flex;align-items:center;justify-content:center}
+.previewIcon .typeIcon{width:34px;height:34px}
+.freeWord{font-family:"Arial Rounded MT Bold",system-ui,sans-serif;font-weight:1000;letter-spacing:-1px}
+button{border:2px solid #251936;border-radius:12px;padding:12px 14px;font-weight:900;background:#d8f36a;color:#251936;box-shadow:3px 3px 0 #251936;margin:5px 3px;cursor:pointer}
+button.secondary{background:white}.hidden{display:none}.row{display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:2px solid #251936;font-weight:900;margin:4px}
+.typeIcon{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:white;font-weight:1000;vertical-align:middle;border:2px solid #251936}
+.typeIcon svg{width:19px;height:19px;display:block}
+.t-grass{background:#67b94f}.t-fire{background:#ef604e}.t-water{background:#43a9df}.t-lightning{background:#f4cf3c;color:#251936}.t-dark{background:#222}.t-psychic{background:#a953b5}.t-fighting{background:#e99a42}.t-steel{background:#89939c}.t-sky{background:#6dcde5}.t-none{background:#f3f0e8;color:#251936}
+.typeText{display:inline-flex;align-items:center;gap:7px}
+.die{border:2px solid #251936;border-radius:16px;padding:10px 7px;margin:12px 0}.die h3{margin:0 0 8px}.faces{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,48px);gap:4px;width:100%;max-width:470px;margin:auto}
+.face{border:2px solid #251936;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:2px;text-align:center;font-weight:900;background:#f6f3ff;min-width:0;overflow:hidden;padding:3px;font-size:10px}
+.face .typeIcon{width:25px;height:25px;flex:0 0 25px}
+.face .typeIcon svg{width:17px;height:17px}
+.pairIcons{display:flex;align-items:center;justify-content:center;gap:1px;min-width:0}
+.pairIcons .typeIcon{width:20px;height:20px;flex:0 0 20px}
+.pairIcons .typeIcon svg{width:15px;height:15px}
+.plusMini{font-size:10px;font-weight:1000;line-height:1}
+.face{position:relative}.faceNo{position:absolute;top:2px;left:3px;font-size:9px;line-height:1;opacity:.75}
+.f5{grid-column:2;grid-row:1}.f3{grid-column:1;grid-row:2}.f1{grid-column:2;grid-row:2}.f4{grid-column:3;grid-row:2}.f2{grid-column:4;grid-row:2}.f6{grid-column:2;grid-row:3}
+.free{font-family:"Arial Rounded MT Bold",system-ui,sans-serif;font-size:13px;letter-spacing:-1px;background:#fff5dd}
+.small{font-size:12px;opacity:.72}.entry{text-align:center;border:4px solid #251936;border-radius:24px;padding:18px;background:#eef8ff}.entry h2{margin:0 0 10px}.big{font-size:34px;font-weight:1000;margin:12px}
+#status{font-weight:800;margin-top:8px}
+
+.pickerBtn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-width:0;padding:8px 10px;border:2px solid #251936;border-radius:12px;background:#fff;color:#251936;box-shadow:none;margin:0;font-weight:800}
+.pickerBtn .pickCurrent{display:flex;align-items:center;gap:7px;min-width:0}
+.pickerBtn .chev{font-size:13px;opacity:.65}
+.pickerOverlay{position:fixed;inset:0;background:rgba(37,25,54,.42);z-index:999;display:flex;align-items:flex-end;justify-content:center;padding:12px}
+.pickerOverlay.hidden{display:none}
+.pickerSheet{width:min(520px,100%);max-height:72vh;overflow:auto;background:#fffaf0;border:3px solid #251936;border-radius:22px;padding:14px;box-shadow:0 -4px 0 #251936}
+.pickerTitle{font-size:18px;font-weight:1000;margin:2px 2px 10px}
+.pickerGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pickerOption{display:flex;align-items:center;gap:9px;width:100%;padding:11px;border:2px solid #251936;border-radius:13px;background:#fff;color:#251936;box-shadow:none;margin:0;text-align:left}
+.pickerOption.selected{background:#eef8ff;outline:2px solid #d8f36a}
+.pickerOption .typeIcon{width:31px;height:31px;flex:0 0 31px}
+.pickerOption .freeWord{display:inline-flex;align-items:center;justify-content:center;font-size:20px;font-weight:1000;letter-spacing:-1px;min-width:52px;height:31px}
+.pickerClose{width:100%;margin-top:10px;background:#fff}
+.choiceUnit .pickerBtn{min-width:90px}
+
+/* v16: home screen styled to match the saved entry card */
+body{background:#eaf8ff}
+#entry{background:#eaf8ff;border:4px solid #159ee5;border-radius:26px;padding:14px;box-shadow:none}
+#entry .hero,#entryHero,.hero{background:#073f82!important;border:4px solid #159ee5!important;border-radius:24px!important;color:#fff!important;box-shadow:none!important}
+#entry .hero span,#entryHero span,.hero span{color:#fff!important}
+#entry .card,.selection-card,.selectionCard{background:#fff!important;border:4px solid #159ee5!important;border-radius:24px!important;box-shadow:none!important}
+#entry select{border:3px solid #10275a!important;border-radius:16px!important;background:#fff!important}
+#entry button,#next{background:#91d8f5!important;color:#10275a!important;border:3px solid #159ee5!important;border-radius:16px!important;box-shadow:none!important}
+#entry button:hover,#next:hover{transform:none}
+</style></head><body><main>
+<div class="hero"><h1>プラコロ<br>エントリーカード</h1><p>大会エントリー画像をかんたん作成</p></div>
+
+<section id="choose" class="card">
+<label for="pokemon">ポケモン</label>
+<select id="pokemon"><option value="">選んでください</option></select>
+<button id="next">エネコロを設定する</button>
+</section>
+
+<section id="settings" class="card hidden">
+<div id="pokeInfo"></div>
+<p class="small">ポケモンに合わせて3個を自動設定しています。固定面でそのタイプにできない面はFREEです。</p>
+<div id="diceSettings"></div>
+<button id="copy">エネコロ①を3個にコピー</button>
+<button id="confirm">設定を確認</button>
+<button id="back" class="secondary">ポケモン選択に戻る</button>
+</section>
+
+<section id="confirmation" class="card hidden">
+<div id="entryCard" class="entry"></div>
+<button id="save">画像として保存</button>
+<button id="edit" class="secondary">エネコロを変更</button>
+<button id="change" class="secondary">ポケモンを変更</button>
+<div id="status"></div>
+</section>
+
+<div id="pickerOverlay" class="pickerOverlay hidden">
+  <div class="pickerSheet">
+    <div id="pickerTitle" class="pickerTitle">タイプを選択</div>
+    <div id="pickerGrid" class="pickerGrid"></div>
+    <button id="pickerClose" class="pickerClose">閉じる</button>
+  </div>
+</div>
+</main>
+<script>
+const pokemons = [{"name": "フシギダネ", "type": "草", "weak": "炎", "energy": "草"}, {"name": "ヒトカゲ", "type": "炎", "weak": "水", "energy": "炎"}, {"name": "ゼニガメ", "type": "水", "weak": "雷", "energy": "水"}, {"name": "ピカチュウ", "type": "雷", "weak": "闘", "energy": "雷"}, {"name": "ベトベター", "type": "悪", "weak": "闘", "energy": "悪"}, {"name": "イワーク", "type": "闘", "weak": "草", "energy": "闘"}, {"name": "カイロス", "type": "草", "weak": "空", "energy": "草"}, {"name": "イーブイ", "type": "無", "weak": "闘", "energy": "空"}, {"name": "フリーザー", "type": "水", "weak": "鋼", "energy": "水"}, {"name": "サンダー", "type": "雷", "weak": "闘", "energy": "雷"}, {"name": "ファイヤー", "type": "炎", "weak": "水", "energy": "炎"}, {"name": "ミュウ", "type": "超", "weak": "悪", "energy": "超"}, {"name": "ゲンガー", "type": "悪", "weak": "超", "energy": "悪"}, {"name": "メタグロス", "type": "鋼", "weak": "炎", "energy": "鋼"}, {"name": "ルカリオ", "type": "闘", "weak": "炎", "energy": "闘"}];
+const typesA=['草','炎','水','雷','鋼'], typesB=['悪','闘','超','空'], all=['草','炎','水','雷','悪','超','闘','鋼','空'];
+let selected=null, dice=[];
+
+const $=id=>document.getElementById(id);
+function typeIcon(t){
+ const common='viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"';
+ const shapes={
+ '草':`<svg ${common}><path d="M19 4C11 4 5 8 5 15c0 3 2 5 5 5 7 0 9-8 9-16Z"/><path d="M6 19c3-5 6-7 10-10"/></svg>`,
+ '炎':`<svg ${common}><path d="M13 2s1 5-2 7c-2-2-4-1-5 2-2 5 1 10 6 10s8-4 7-9c-.5-3-2-5-4-7 0 3-1 4-2 5 1-4 0-6 0-8Z"/></svg>`,
+ '水':`<svg ${common}><path d="M12 2C9 7 5 11 5 15a7 7 0 0 0 14 0c0-4-4-8-7-13Z"/></svg>`,
+ '雷':`<svg ${common}><path d="M13 2 5 14h6l-1 8 9-13h-6V2Z"/></svg>`,
+ '悪':`<svg ${common}><path fill="currentColor" stroke="none" d="M5 5c4 3 10 3 14 0-1 8-4 14-7 16-3-2-6-8-7-16Zm4 5c1 4 2 6 3 7 1-1 2-3 3-7-2 1-4 1-6 0Z"/></svg>`,
+ '超':`<svg ${common}><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+ '闘':`<svg ${common}><path d="M7 11V7a2 2 0 0 1 4 0v3"/><path d="M11 10V6a2 2 0 0 1 4 0v4"/><path d="M15 10V8a2 2 0 0 1 4 0v6c0 5-3 8-7 8-5 0-8-3-8-8v-2a2 2 0 0 1 4 0v2"/></svg>`,
+ '鋼':`<svg ${common}><path d="M10 2h4l1 3 3-1 2 3-2 2 2 3-2 3 2 2-2 3-3-1-1 3h-4l-1-3-3 1-2-3 2-2-2-3 2-3-2-2 2-3 3 1 1-3Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+ '空':`<svg ${common}><path d="M3 18c6-1 11-5 16-13 1 7-2 13-7 15-3 1-6 0-9-2Z"/><path d="M7 17c4-2 7-5 10-9"/></svg>`,
+ '無':`<svg ${common}><path fill="currentColor" stroke="none" d="m12 1 2.1 6.4L20 4l-3.4 5.9L23 12l-6.4 2.1L20 20l-5.9-3.4L12 23l-2.1-6.4L4 20l3.4-5.9L1 12l6.4-2.1L4 4l5.9 3.4L12 1Z"/></svg>`
+ };
+ const cls={'草':'grass','炎':'fire','水':'water','雷':'lightning','悪':'dark','超':'psychic','闘':'fighting','鋼':'steel','空':'sky','無':'none'}[t];
+ return `<span class="typeIcon t-${cls}">${shapes[t]||''}</span>`;
+}
+function typeDisplay(t){return `<span class="typeText">${typeIcon(t)}<b>${t}</b></span>`;}
+function preview(t){
+ return t==='FREE'
+   ? '<span class="freeWord">FREE</span>'
+   : typeIcon(t);
+}
+pokemons.forEach((p,i)=>$('pokemon').insertAdjacentHTML('beforeend',`<option value="${i}">${p.name}</option>`));
+$('pokemon').insertAdjacentHTML('beforeend','<option value="thinking">考え中</option>');
+
+function makeDie(t){
+ const a=typesA.includes(t)?t:'FREE', b=typesB.includes(t)?t:'FREE';
+ return {f1:a,f2:b,f3:t,f4:t,f5:[t,t],f6:[t,t]};
+}
+function val(v){
+ if(Array.isArray(v)) return `<span class="pairIcons">${v.map(x=>typeIcon(x)).join('<span class="plusMini">＋</span>')}</span>`;
+ if(v==='FREE') return '<span class="freeWord">FREE</span>';
+ return typeIcon(v);
+}
+function opts(list,current){return list.map(x=>`<option ${x===current?'selected':''}>${x}</option>`).join('')}
+function selector(i,key,list,current,part){
+ const id=`d${i}_${key}${part??''}`;
+ const encoded=encodeURIComponent(JSON.stringify(list));
+ return `<span class="choiceUnit"><button type="button" class="pickerBtn" id="${id}" data-d="${i}" data-k="${key}" data-p="${part??''}" data-options="${encoded}" data-value="${current}"><span class="pickCurrent">${preview(current)}${current==='FREE'?'':`<b>${current}</b>`}</span><span class="chev">▼</span></button></span>`;
+}
+
+let activePicker=null;
+function openPicker(btn){
+ activePicker=btn;
+ const options=JSON.parse(decodeURIComponent(btn.dataset.options));
+ const current=btn.dataset.value;
+ $('pickerTitle').textContent=`${'エネコロ'+('①②③'[+btn.dataset.d])}・面${btn.dataset.k.replace('f','')}`;
+ $('pickerGrid').innerHTML=options.map(x=>`<button type="button" class="pickerOption ${x===current?'selected':''}" data-v="${x}">${preview(x)}${x==='FREE'?'':`<b>${x}</b>`}</button>`).join('');
+ $('pickerGrid').querySelectorAll('.pickerOption').forEach(o=>o.onclick=()=>choosePicker(o.dataset.v));
+ $('pickerOverlay').classList.remove('hidden');
+}
+function choosePicker(value){
+ if(!activePicker)return;
+ const i=+activePicker.dataset.d,k=activePicker.dataset.k,p=activePicker.dataset.p;
+ if(p==='') dice[i][k]=value; else dice[i][k][+p]=value;
+ activePicker.dataset.value=value;
+ activePicker.querySelector('.pickCurrent').innerHTML=`${preview(value)}${value==='FREE'?'':`<b>${value}</b>`}`;
+ closePicker();
+}
+function closePicker(){
+ $('pickerOverlay').classList.add('hidden');
+ activePicker=null;
+}
+function renderSettings(){
+ $('pokeInfo').innerHTML=`<div class="big">${selected.name}</div><span class="pill">タイプ：${typeDisplay(selected.type)}</span><span class="pill">弱点：${typeDisplay(selected.weak)}</span>`;
+ $('diceSettings').innerHTML=dice.map((d,i)=>`<div class="die"><h3>エネコロ${'①②③'[i]}</h3>
+ <div class="faceControl"><span class="faceLabel">面①</span>${selector(i,'f1',[...typesA,'FREE'],d.f1)}</div>
+ <div class="faceControl"><span class="faceLabel">面②</span>${selector(i,'f2',[...typesB,'FREE'],d.f2)}</div>
+ <div class="faceControl"><span class="faceLabel">面③</span>${selector(i,'f3',all,d.f3)}</div>
+ <div class="faceControl"><span class="faceLabel">面④</span>${selector(i,'f4',all,d.f4)}</div>
+ <div class="faceControl double"><span class="faceLabel">面⑤</span>${selector(i,'f5',all,d.f5[0],0)}<span class="plusSetting">＋</span>${selector(i,'f5',all,d.f5[1],1)}</div>
+ <div class="faceControl double"><span class="faceLabel">面⑥</span>${selector(i,'f6',all,d.f6[0],0)}<span class="plusSetting">＋</span>${selector(i,'f6',all,d.f6[1],1)}</div></div>`).join('');
+ document.querySelectorAll('#diceSettings .pickerBtn').forEach(btn=>{
+   btn.onclick=()=>openPicker(btn);
+ });
+}
+function net(d){
+ return `<div class="faces">
+ <div class="face f5"><span class="faceNo">⑤</span>${val(d.f5)}</div><div class="face f3"><span class="faceNo">③</span>${val(d.f3)}</div>
+ <div class="face f1 ${d.f1==='FREE'?'free':''}"><span class="faceNo">①</span>${val(d.f1)}</div>
+ <div class="face f4"><span class="faceNo">④</span>${val(d.f4)}</div><div class="face f2 ${d.f2==='FREE'?'free':''}"><span class="faceNo">②</span>${val(d.f2)}</div>
+ <div class="face f6"><span class="faceNo">⑥</span>${val(d.f6)}</div></div>`;
+}
+function showCard(){
+ if(selected==='thinking'){
+   $('entryCard').innerHTML=`<h2>プラコロ エントリーカード</h2><div style="font-size:62px">？</div><div class="big">考え中…</div><p>使用ポケモン・エネコロは<br>後ほど決定します</p>`;
+ } else {
+   $('entryCard').innerHTML=`<h2>プラコロ エントリーカード</h2><div class="big">${selected.name}</div>
+   <span class="pill">タイプ：${typeDisplay(selected.type)}</span><span class="pill">弱点：${typeDisplay(selected.weak)}</span>
+   ${dice.map((d,i)=>`<div class="die"><h3>エネコロ${'①②③'[i]}</h3>${net(d)}</div>`).join('')}`;
+ }
+}
+$('pickerClose').onclick=closePicker;
+$('pickerOverlay').onclick=e=>{if(e.target===$('pickerOverlay'))closePicker()};
+$('next').onclick=()=>{
+ const v=$('pokemon').value;if(v===''){alert('ポケモンを選んでください');return}
+ if(v==='thinking'){selected='thinking';$('choose').classList.add('hidden');$('confirmation').classList.remove('hidden');showCard();return}
+ selected=pokemons[+v]; dice=[makeDie(selected.energy),makeDie(selected.energy),makeDie(selected.energy)];
+ $('choose').classList.add('hidden');$('settings').classList.remove('hidden');renderSettings();
+};
+$('copy').onclick=()=>{dice=[structuredClone(dice[0]),structuredClone(dice[0]),structuredClone(dice[0])];renderSettings()};
+$('confirm').onclick=()=>{$('settings').classList.add('hidden');$('confirmation').classList.remove('hidden');showCard()};
+$('back').onclick=$('change').onclick=()=>{$('settings').classList.add('hidden');$('confirmation').classList.add('hidden');$('choose').classList.remove('hidden')};
+$('edit').onclick=()=>{if(selected==='thinking')return;$('confirmation').classList.add('hidden');$('settings').classList.remove('hidden')};
+
+$('save').onclick=async()=>{
+ $('status').textContent='画像を作成中…';
+ try{
+  const W=1600,H=1060;
+  const c=document.createElement('canvas');c.width=W;c.height=H;
+  const x=c.getContext('2d');
+  const ink='#10275a',deep='#073f82',blue='#159ee5',pale='#eaf8ff',gold='#d89a00';
+
+  x.fillStyle=pale;x.fillRect(0,0,W,H);
+
+  function rr(px,py,w,h,r,fill,stroke=ink,lw=5){
+   x.beginPath();x.roundRect(px,py,w,h,r);
+   if(fill){x.fillStyle=fill;x.fill()}
+   if(stroke){x.strokeStyle=stroke;x.lineWidth=lw;x.stroke()}
+  }
+  function txt(t,px,py,size=36,weight=800,align='center',color=ink){
+   x.fillStyle=color;x.font=`${weight} ${size}px sans-serif`;x.textAlign=align;x.textBaseline='middle';x.fillText(t,px,py);
+  }
+  function icon(t,cx,cy,sz=52){
+   const colors={'草':'#67b94f','炎':'#ef604e','水':'#43a9df','雷':'#f4cf3c','悪':'#222','超':'#a953b5','闘':'#e99a42','鋼':'#89939c','空':'#6dcde5','無':'#f3f0e8'};
+   const fg=(t==='雷'||t==='無')?ink:'#fff';
+   rr(cx-sz/2,cy-sz/2,sz,sz,sz*0.285,colors[t]||'#fff',ink,Math.max(2,sz*0.065));
+
+   x.save();
+   x.translate(cx-sz/2,cy-sz/2);
+   const sc=sz/24;x.scale(sc,sc);
+   x.strokeStyle=fg;x.fillStyle=fg;x.lineWidth=2.4;x.lineCap='round';x.lineJoin='round';
+
+   const strokePath=d=>x.stroke(new Path2D(d));
+   const fillPath=d=>x.fill(new Path2D(d));
+
+   if(t==='草'){
+    strokePath('M19 4C11 4 5 8 5 15c0 3 2 5 5 5 7 0 9-8 9-16Z');
+    strokePath('M6 19c3-5 6-7 10-10');
+   }else if(t==='炎'){
+    strokePath('M13 2s1 5-2 7c-2-2-4-1-5 2-2 5 1 10 6 10s8-4 7-9c-.5-3-2-5-4-7 0 3-1 4-2 5 1-4 0-6 0-8Z');
+   }else if(t==='水'){
+    strokePath('M12 2C9 7 5 11 5 15a7 7 0 0 0 14 0c0-4-4-8-7-13Z');
+   }else if(t==='雷'){
+    strokePath('M13 2 5 14h6l-1 8 9-13h-6V2Z');
+   }else if(t==='悪'){
+    fillPath('M5 5c4 3 10 3 14 0-1 8-4 14-7 16-3-2-6-8-7-16Zm4 5c1 4 2 6 3 7 1-1 2-3 3-7-2 1-4 1-6 0Z');
+   }else if(t==='超'){
+    strokePath('M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12Z');
+    x.beginPath();x.arc(12,12,3,0,Math.PI*2);x.stroke();
+   }else if(t==='闘'){
+    strokePath('M7 11V7a2 2 0 0 1 4 0v3');
+    strokePath('M11 10V6a2 2 0 0 1 4 0v4');
+    strokePath('M15 10V8a2 2 0 0 1 4 0v6c0 5-3 8-7 8-5 0-8-3-8-8v-2a2 2 0 0 1 4 0v2');
+   }else if(t==='鋼'){
+    strokePath('M10 2h4l1 3 3-1 2 3-2 2 2 3-2 3 2 2-2 3-3-1-1 3h-4l-1-3-3 1-2-3 2-2-2-3 2-3-2-2 2-3 3 1 1-3Z');
+    x.beginPath();x.arc(12,12,3,0,Math.PI*2);x.stroke();
+   }else if(t==='空'){
+    strokePath('M3 18c6-1 11-5 16-13 1 7-2 13-7 15-3 1-6 0-9-2Z');
+    strokePath('M7 17c4-2 7-5 10-9');
+   }else if(t==='無'){
+    fillPath('M12 1 14.1 7.4 20 4l-3.4 5.9L23 12l-6.4 2.1L20 20l-5.9-3.4L12 23l-2.1-6.4L4 20l3.4-5.9L1 12l6.4-2.1L4 4l5.9 3.4L12 1Z');
+   }
+   x.restore();
+  }
+  function infoBox(label,value,t,px,py,w,accent){
+   rr(px,py,w,150,22,'#fff',accent,5);
+   rr(px,py,w,46,22,accent,null,0);txt(label,px+w/2,py+23,29,1000,'center','#fff');
+   icon(t,px+w/2-35,py+94,58);txt(value,px+w/2+22,py+100,30,1000,'left');
+  }
+  function face(px,py,w,h,num,value){
+   rr(px,py,w,h,10,'#fffdf1',gold,4);txt(num,px+18,py+15,17,1000);
+   if(value==='FREE'){txt('FREE',px+w/2,py+h/2+4,22,1000,'center','#5a2b1c')}
+   else if(Array.isArray(value)){icon(value[0],px+w/2-27,py+h/2+4,38);txt('＋',px+w/2,py+h/2+4,16,1000);icon(value[1],px+w/2+27,py+h/2+4,38)}
+   else icon(value,px+w/2,py+h/2+4,42);
+  }
+  function diePanel(d,i,px,py,w,h){
+   rr(px,py,w,h,25,'#e7f8ff','#25aee9',4);
+   rr(px+10,py+10,w-20,54,18,'#91d8f5',null,0);txt(`エネコロ ${i+1}`,px+w/2,py+37,31,1000);
+   const fw=104,fh=92,g=3,cx=px+w/2,top=py+142,rowW=fw*4+g*3,left=cx-rowW/2;
+   face(cx-fw/2,top,fw,fh,'⑤',d.f5);
+   const y=top+fh+g;
+   face(left,y,fw,fh,'③',d.f3);face(left+fw+g,y,fw,fh,'①',d.f1);face(left+(fw+g)*2,y,fw,fh,'④',d.f4);face(left+(fw+g)*3,y,fw,fh,'②',d.f2);
+   face(cx-fw/2,y+fh+g,fw,fh,'⑥',d.f6);
+  }
+
+  rr(12,12,W-24,H-24,34,pale,blue,8);
+  rr(28,25,W-56,104,30,deep,'#0c72bd',6);
+  txt('プラコロ エントリーカード',W/2,77,57,1000,'center','#fff');
+
+  if(selected==='thinking'){
+   rr(75,165,W-150,710,35,'#fff','#25aee9',6);
+   txt('？',W/2,350,180,1000);
+   txt('考え中…',W/2,510,82,1000);
+   txt('使用ポケモン・エネコロは',W/2,650,42,900);
+   txt('後ほど決定します',W/2,715,42,900);
+  }else{
+   rr(35,150,700,165,24,'#fff','#1389ca',5);
+   rr(35,150,700,48,20,deep,null,0);txt('ポケモン名',75,174,29,1000,'left','#fff');
+   txt(selected.name,385,255,62,1000);
+   infoBox('タイプ',selected.type,selected.type,755,150,390,'#efbd20');
+   infoBox('弱点',selected.weak,selected.weak,1165,150,400,'#ef6666');
+
+   diePanel(dice[0],0,35,340,500,520);
+   diePanel(dice[1],1,550,340,500,520);
+   diePanel(dice[2],2,1065,340,500,520);
+
+   rr(35,885,1530,135,25,'#fff','#1389ca',5);
+   rr(35,885,185,135,22,deep,null,0);txt('タイプ',127,925,28,1000,'center','#fff');txt('アイコン一覧',127,965,25,1000,'center','#fff');
+   const legend=['草','炎','水','雷','闘','空','超','悪','鋼','無'];
+   legend.forEach((t,j)=>{const cx=275+j*112;icon(t,cx,938,54);txt(t,cx,986,24,1000)});
+   rr(1415,900,115,82,14,'#fffdf1',gold,4);txt('FREE',1472,941,23,1000,'center','#5a2b1c');txt('自由',1472,1000,22,1000);
+  }
+
+  const blob=await new Promise(res=>c.toBlob(res,'image/png'));
+  if(!blob)throw Error('blob');
+  const u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download='plakoro-entry.png';a.style.display='none';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),3000);
+  $('status').textContent='画像を保存しました';
+ }catch(e){$('status').textContent='画像保存に失敗しました'}
+};
+</script></body></html>
