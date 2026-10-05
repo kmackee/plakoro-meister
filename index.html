@@ -76,6 +76,23 @@ body{background:#eaf8ff}
 .meister-disabled{opacity:.78}
 .meister-footer{margin-top:22px;padding:15px 10px 0;text-align:center;color:#667789;font-size:11px;line-height:1.6}
 .meister-back{margin:0 auto 12px;display:block;border:0;background:transparent;color:#075d9e;font-weight:900;font-size:14px;padding:8px 12px}
+
+.pokedex-wrap{max-width:620px;margin:0 auto;padding:22px 14px 34px;color:#10275a}
+.pokedex-head{background:#073f82;color:#fff;border:4px solid #159ee5;border-radius:26px;padding:20px 18px;text-align:center;margin-bottom:14px}
+.pokedex-head h1{margin:0 0 6px;font-size:26px}.pokedex-head p{margin:0;font-size:13px;color:#d9efff}
+.pokedex-select{background:#fff;border:4px solid #159ee5;border-radius:24px;padding:16px;margin-bottom:14px}
+.pokedex-select select{border:3px solid #10275a;border-radius:16px;padding:12px}
+.dex-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dex-name-btn{width:100%;margin:0;background:#fff!important;color:#073f82!important;border:3px solid #159ee5!important;border-radius:16px!important;box-shadow:none!important;text-align:left;padding:14px 16px!important;font-size:17px!important}
+.dex-name-btn::after{content:'›';float:right;font-size:25px;line-height:18px}
+.pokedex-info{background:#fff;border:4px solid #159ee5;border-radius:24px;padding:17px}
+.dex-detail-back{width:100%;margin:0 0 12px!important;background:#91d8f5!important;color:#10275a!important;border:3px solid #159ee5!important;box-shadow:none!important}
+.pokedex-info h2{margin:0 0 10px;color:#073f82;font-size:26px}
+.dex-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}.dex-chip{border:2px solid #159ee5;border-radius:999px;padding:7px 10px;font-weight:900;background:#eef8ff}
+.move-card{border:2px solid #b8dff4;border-radius:16px;padding:12px;margin:9px 0;background:#fbfeff}
+.move-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.move-name{font-weight:1000;color:#073f82}
+.move-cost{font-weight:900;font-size:13px;white-space:nowrap}.move-dmg{font-size:13px;margin-top:5px;font-weight:800}
+.dex-note{font-size:11px;color:#667789;line-height:1.5;margin-top:12px}
 </style>
 
 </head><body>
@@ -84,10 +101,25 @@ body{background:#eaf8ff}
   <header class="meister-hero"><img class="meister-logo" src="assets/koromate-logo.png" alt="コロメイト"><p class="meister-purpose">プラコロ向け非公式サポートツール</p><p class="meister-catch">プラコロをもっと楽しく、もっと深く。</p></header>
   <main class="meister-menu">
    <section class="meister-card"><h2>📝 エントリーカード作成</h2><p>大会用のポケモン・エネコロを選んで、エントリー画像を作成できます。</p><button class="meister-btn" type="button" onclick="openEntryTool()">使ってみる</button></section>
+   <section class="meister-card"><h2>📖 ポケモン・ワザ図鑑</h2><p>プラコロに登場するポケモンのタイプ・弱点・ワザを確認できます。</p><button class="meister-btn" type="button" onclick="openPokedex()">見る</button></section>
    <section class="meister-card meister-disabled"><h2>🎲 確率計算ツール</h2><p>エネコロの成功率などを計算・比較できる機能を追加予定です。</p><span class="meister-soon">COMING SOON</span></section>
    <section class="meister-card meister-disabled"><h2>⚔️ 対戦シミュレーター</h2><p>ポケモン同士の対戦をシミュレーションできる機能を追加予定です。</p><span class="meister-soon">COMING SOON</span></section>
   </main>
   <footer class="meister-footer">本サイトは非公式のファン制作ツールです。<br>各権利者・関係各社とは関係ありません。</footer>
+ </div>
+</div>
+
+<div id="pokedexTool" style="display:none">
+ <button class="meister-back" type="button" onclick="backFromPokedex()">← コロメイトへ戻る</button>
+ <div class="pokedex-wrap">
+  <header class="pokedex-head"><h1>📖 ポケモン・ワザ図鑑</h1><p>ポケモンの名前をタップすると、タイプ・弱点・ワザを確認できます。</p></header>
+  <section id="dexListPanel" class="pokedex-select">
+   <div id="dexList" class="dex-list"></div>
+  </section>
+  <section id="dexDetailPanel" class="hidden">
+   <button class="dex-detail-back" type="button" onclick="backToDexList()">← ポケモン一覧へ戻る</button>
+   <section id="dexInfo" class="pokedex-info"></section>
+  </section>
  </div>
 </div>
 
@@ -360,5 +392,321 @@ $('save').onclick=async()=>{
 <script>
 function openEntryTool(){document.getElementById('meisterHome').style.display='none';document.getElementById('entryTool').style.display='block';window.scrollTo(0,0);}
 function backToMeisterHome(){document.getElementById('entryTool').style.display='none';document.getElementById('meisterHome').style.display='block';window.scrollTo(0,0);}
+
+const POKEDEX=[
+{name:'フシギダネ',type:'草',weak:'炎',hp:120,moves:[['つるのむち','草×1','10'],['はっぱカッター','草×2','20'],['やどりぎのタネ','草×2','10'],['くさむすび','草×3','30'],['とつげき','草×3','30'],['ギガドレイン','草×4','40'],['アシッドボム','悪×1＋無×2','10'],['アロマストーム','草×4','30','promo']]},
+{name:'ヒトカゲ',type:'炎',weak:'水',hp:120,moves:[['ひのこ','炎×2','20'],['ヒートアップ','炎×2','10'],['かえんほうしゃ','炎×3','40'],['ほのおのキバ','炎×4','30'],['フレアストーム','無×5','20'],['かみなりパンチ','雷×1＋無×2','10'],['メタルクロー','鋼×1＋無×2','20'],['フレイムアップ','炎×3','20','promo']]},
+{name:'ゼニガメ',type:'水',weak:'雷',hp:120,moves:[['みずでっぽう','水×1','10'],['からにこもる','水×1',null],['みずのはどう','水×2','20'],['シェルアタック','水×3','30'],['バブルこうせん','水×3','30'],['ハイドロアンガー','水×4','40'],['マッドショット','闘×1＋無×3','30'],['カチカチこうら','水×3','20','promo']]},
+{name:'ピカチュウ',type:'雷',weak:'闘',hp:120,moves:[['かじる','雷×1','10'],['でんきショック','雷×2','10'],['エレキラッシュ','雷×2','20'],['10まんボルト','雷×3','30'],['かみなり','雷×3','20'],['ボルテッカー','雷×4','40'],['アイアンテール','鋼×1','20']]},
+{name:'イーブイ',type:'無',weak:'闘',hp:120,moves:[['しっぽではたく','空×1','10'],['たいあたり','空×2','10'],['とっしん','空×2','30'],['はねまわる','空×3',null],['ぜんりょくダッシュ','無×5','40'],['あまえる','超×1','20'],['かみつく','悪×1＋無×2','10']]},
+{name:'ミュウ',type:'超',weak:'悪',hp:120,moves:[['ねんりき','超×1','10'],['サイケこうせん','超×2','20'],['バリアー','超×2',null],['メモリースキップ','超×3','20'],['サイコショット','超×3','30'],['サイコキネシス','超×3','20'],['リフレクション','超×4',null]]},
+{name:'ゲンガー',type:'悪',weak:'超',hp:120,moves:[['ガスでつつむ','悪×1','10'],['ホロウショット','悪×2','20'],['まっさかさま','悪×2','20'],['かげしばり','悪×3','30'],['ヘドロばくだん','悪×3','30'],['ファントムトリック','悪×4','10'],['サイコウェーブ','超×1＋無×3','30'],['ナイトロック','悪×4','30','promo']]},
+{name:'メタグロス',type:'鋼',weak:'炎',hp:120,moves:[['ビーム','鋼×1','10'],['しそくえんざん','鋼×2','20'],['ワイドプレス','鋼×2','20'],['コメットパンチ','鋼×3','20'],['ストレートスタンプ','鋼×3','30'],['ベビーボンバー','鋼×4','40'],['だいばくはつ','無×5','100'],['こうてつのツメ','鋼×1','10','promo']]},
+{name:'ルカリオ',type:'闘',weak:'炎',hp:120,moves:[['キック','闘×1','10'],['はどうナックル','闘×2','20'],['はっけい','闘×2','20'],['まわしげり','闘×3','20'],['オーラづき','闘×3','30'],['はどうだん','闘×4','40'],['メタルクロー','鋼×1＋無×3','30'],['しんくうは','闘×3','20','promo']]},
+{name:'ベトベター',type:'悪',weak:'闘',hp:120,moves:[['どくガス','悪×1','10'],['ベトベトなげ','悪×2','20'],['どくどくヒール','悪×3','30'],['ヘドロでかこむ','悪×3','30'],['ベノムパンチ','悪×4','40'],['ベノムスリップ','悪×2','20'],['どくどくボンバー','悪×3','30'],['ヘドロタックル','悪×3','20'],['いやがらせベノム','悪×4','20']]},
+{name:'イワーク',type:'闘',weak:'草',hp:120,moves:[['がんせきタックル','闘×2','10'],['いわおとし','闘×3','20'],['ロックウォール','闘×3','30'],['ハードインパクト','闘×4','30'],['ジャイロボール','鋼×1＋無×2','20'],['ぶつかる','闘×1','10'],['いわなだれ','闘×2','20'],['ワイルドタックル','闘×3','30'],['がんせきバリア','闘×4','40'],['アイアンテール','鋼×1＋無×2','20']]},
+{name:'カイロス',type:'草',weak:'空',hp:120,moves:[['しゅうちゅう','草×1',null],['たえる','草×2',null],['つのでたたく','草×3','20'],['ハサミギロチン','草×5',null],['かわらわり','闘×1','20'],['チャージばさみ','草×1','20'],['ぎゃくじょうスイング','草×3','10'],['とつげき','草×3','30'],['ひっさつばさみ','草×4','20'],['じごくぐるま','闘×1＋無×3','30']]},
+{name:'フリーザー',type:'水',weak:'鋼',hp:120,moves:[['アイスウイング','水×2','10'],['いてつくやいば','水×3','30'],['ブリザードストーム','水×4','30'],['エアカッター','空×1＋無×3','40'],['はねやすめ','空×2',null],['フリーズダイブ','水×1','10'],['アイスショット','水×2','20'],['コールドブレス','水×3','20'],['ぜったいれいど','水×3','40'],['そらをとぶ','空×1＋無×2','30']]},
+{name:'サンダー',type:'雷',weak:'闘',hp:120,moves:[['でんじフラッシュ','雷×2','20'],['でんきショック','雷×1','10'],['ボルトラッシュ','雷×4','10'],['つばめがえし','空×1','20'],['バリバリウイング','空×1＋無×4','40'],['ダブルサンダー','雷×1',null],['エレキアロー','雷×2','20'],['ほうでん','雷×3','30'],['サンダーチェイン','雷×4','30'],['そらをとぶ','空×1＋無×2','30']]},
+{name:'ファイヤー',type:'炎',weak:'水',hp:120,moves:[['ほのおのつばさ','炎×2','30'],['ねっぷう','炎×3','30'],['かえんほうしゃ','炎×4','40'],['フレアドライブ','炎×5','50'],['ぼうふう','空×1＋無×3','20'],['ほのおのうず','炎×2','20'],['ヒートブレス','炎×3','40'],['もえつきる','炎×4','80'],['ウイングラッシュ','空×1','20'],['そらをとぶ','空×1＋無×2','30']]}
+];
+function renderDexList(){
+ document.getElementById('dexList').innerHTML=POKEDEX.map(p=>`<button type="button" class="dex-name-btn" onclick="openDexDetail('${p.name}')">${p.name}</button>`).join('');
+}
+function energyIcons(cost){
+ const types=['草','炎','水','雷','悪','超','闘','鋼','空','無'];
+ const icons=[];
+ const re=/(草|炎|水|雷|悪|超|闘|鋼|空|無)(?:×(\d+))?/g;
+ let m;
+ while((m=re.exec(cost))!==null){
+  const count=m[2]?Number(m[2]):1;
+  for(let i=0;i<count;i++) icons.push(typeIcon(m[1]));
+ }
+ return icons.join('');
+}
+
+function poseIcon(p){
+ const base=`<circle cx="20" cy="8" r="5.5"/><rect x="15" y="14" width="10" height="12" rx="4"/><path d="M15 17 9 22M25 17 31 22M17 25 14 33M23 25 26 33"/>`;
+ const rot={stand:0,invert:180,left:-90,right:90}[p];
+ if(rot!==undefined) return `<span class="poseIcon" title="${p}"><svg viewBox="0 0 40 40" style="transform:rotate(${rot}deg)">${base}</svg></span>`;
+ if(p==="supine") return `<span class="poseIcon" title="あおむけ"><svg viewBox="0 0 40 40"><circle cx="10" cy="24" r="5"/><path d="M15 26H35M20 25L20 15M35 26L35 15"/></svg></span>`;
+ if(p==="prone") return `<span class="poseIcon" title="うつぶせ"><svg viewBox="0 0 40 40"><circle cx="10" cy="26" r="5"/><path d="M15 24H35M20 25L20 35M35 24L35 35"/></svg></span>`;
+ return "";
+}
+const MOVE_FX={
+"フシギダネ|つるのむち":{r:[[["stand","supine","prone"],"＋20ダメージ"]]},
+"フシギダネ|はっぱカッター":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"フシギダネ|やどりぎのタネ":{r:[[["stand","supine","right","left"],"次の相手の番：相手のエネコロ−1／次の自分の番：自分のエネコロ＋1"]]},
+"フシギダネ|くさむすび":{r:[[["stand","supine","prone"],"相手のワザを1つ選ぶ。次の相手の番、そのワザは使えない"]]},
+"フシギダネ|とつげき":{r:[[["stand","supine"],"＋40ダメージ"],[["invert","prone"],"このポケモンにも30ダメージ"]]},
+"フシギダネ|ギガドレイン":{r:[[["stand","right","left"],"このポケモンのHPを40回復"]]},
+"フシギダネ|アシッドボム":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"フシギダネ|アロマストーム":{r:[[["stand"],"このポケモンのHPを50回復"]]},
+
+"ヒトカゲ|ひのこ":{r:[[["stand","supine"],"＋30ダメージ"]]},
+"ヒトカゲ|ヒートアップ":{r:[[["stand","supine"],"次の自分の番：自分のエネコロ＋2"]]},
+"ヒトカゲ|かえんほうしゃ":{r:[[["stand","supine"],"＋20ダメージ"],[["invert","prone","right","left"],"次の自分の番：自分のエネコロ−2"]]},
+"ヒトカゲ|ほのおのキバ":{r:[[["stand","supine","prone"],"＋30ダメージ"]]},
+"ヒトカゲ|フレアストーム":{r:[[["stand","right","left"],"エネコロで出た炎エネルギーの数×10ダメージ追加"]]},
+"ヒトカゲ|かみなりパンチ":{r:[[["stand","supine","right","left"],"＋20ダメージ"]]},
+"ヒトカゲ|メタルクロー":{r:[[["stand"],"＋40ダメージ"]]},
+"ヒトカゲ|フレイムアップ":{r:[[["stand"],"次の自分の番：自分のエネコロ＋2"],[["invert"],"次の自分の番：自分のエネコロ−2"]]},
+
+"ゼニガメ|みずでっぽう":{r:[[["stand","prone"],"＋20ダメージ"]]},
+"ゼニガメ|からにこもる":{b:"次の相手の番、このポケモンが受けるダメージ−20",r:[[["prone"],"このポケモンのHPを30回復"]]},
+"ゼニガメ|みずのはどう":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"ゼニガメ|シェルアタック":{r:[[["stand","supine","prone"],"次の相手の番、このポケモンが受けるダメージ−20"]]},
+"ゼニガメ|バブルこうせん":{r:[[["stand","supine","prone"],"次の相手の番：相手のエネコロ−1"]]},
+"ゼニガメ|ハイドロアンガー":{r:[[["stand","supine","prone"],"残りHP40以下なら＋60ダメージ"]]},
+"ゼニガメ|マッドショット":{r:[[["stand","right","left"],"＋30ダメージ"]]},
+"ゼニガメ|カチカチこうら":{r:[[["prone"],"次の相手の番、このポケモンが受けるダメージ−50"]]},
+
+"ピカチュウ|かじる":{r:[[["stand","supine"],"＋30ダメージ"]]},
+"ピカチュウ|でんきショック":{r:[[["stand","supine","right","left"],"＋20ダメージ"]]},
+"ピカチュウ|エレキラッシュ":{b:"このワザは弱点を計算しない",r:[[["stand","supine"],"もう1回「エレキラッシュ」を使う（失敗するまでくり返せる）"]]},
+"ピカチュウ|10まんボルト":{r:[[["stand","right","left"],"＋30ダメージ"],[["invert","supine","prone"],"次の自分の番：自分のエネコロ−2"]]},
+"ピカチュウ|かみなり":{r:[[["stand"],"＋60ダメージ"]]},
+"ピカチュウ|ボルテッカー":{b:"このポケモンにも30ダメージ",r:[[["stand","supine","prone"],"＋40ダメージ"]]},
+"ピカチュウ|アイアンテール":{r:[[["stand","right","left"],"次の相手の番、このポケモンが受けるダメージ−10"]]},
+
+"イーブイ|しっぽではたく":{r:[[["stand","right","left"],"＋10ダメージ"]]},
+"イーブイ|たいあたり":{r:[[["stand","supine","right","left"],"＋20ダメージ"]]},
+"イーブイ|とっしん":{r:[[["stand","supine"],"＋20ダメージ"],[["invert","prone"],"このポケモンにも20ダメージ"]]},
+"イーブイ|はねまわる":{r:[[["stand"],"70ダメージ与える"],[["supine","prone"],"40ダメージ与える"],[["invert","right","left"],"20ダメージ与える"]]},
+"イーブイ|ぜんりょくダッシュ":{r:[[["stand","supine","prone"],"＋40ダメージ"]]},
+"イーブイ|あまえる":{r:[[["stand","supine","right","left"],"次の相手の番：相手のエネコロ−2"]]},
+"イーブイ|かみつく":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+
+"ミュウ|ねんりき":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"ミュウ|サイケこうせん":{r:[[["stand","invert"],"＋30ダメージ"]]},
+"ミュウ|バリアー":{b:"次の相手の番、このポケモンが受けるダメージ−20",r:[[["stand","supine"],"受けるダメージをさらに−30"]]},
+"ミュウ|メモリースキップ":{r:[[["stand","right","left"],"相手のワザを1つ選ぶ。次の相手の番、そのワザは使えない"]]},
+"ミュウ|サイコショット":{r:[[["stand","invert","supine","prone"],"＋20ダメージ"]]},
+"ミュウ|サイコキネシス":{r:[[["stand","supine","prone"],"相手はエネコロを3個振る。一番多く出たタイプのエネルギーの数×10ダメージ追加"]]},
+"ミュウ|リフレクション":{b:"相手が最後に選んだワザに書かれているダメージを相手に与える（そのワザのキャラコロ効果は無視）",r:[[["stand","right","left"],"このワザで与えるダメージを2倍にする"]]},
+
+"ゲンガー|ガスでつつむ":{r:[[["stand","right","left"],"＋10ダメージ"]]},
+"ゲンガー|ホロウショット":{r:[[["stand","supine","prone"],"＋20ダメージ"]]},
+"ゲンガー|まっさかさま":{r:[[["stand","right","left"],"次の相手の番、相手のキャラコロの向きを逆にする"]]},
+"ゲンガー|かげしばり":{r:[[["stand","supine","right","left"],"次の相手の番、相手はキャラコロを振れない"]]},
+"ゲンガー|ヘドロばくだん":{r:[[["stand","supine","right","left"],"＋20ダメージ"]]},
+"ゲンガー|ファントムトリック":{r:[[["stand","invert","supine","prone"],"相手はキャラコロを3回振り、逆立・うつぶせが出るたび＋40ダメージ"]]},
+"ゲンガー|サイコウェーブ":{r:[[["stand"],"＋40ダメージ"]]},
+"ゲンガー|ナイトロック":{r:[[["stand"],"次の相手の番：相手のエネコロ−2"]]},
+
+"メタグロス|ビーム":{r:[[["stand","supine"],"＋20ダメージ"]]},
+"メタグロス|しそくえんざん":{r:[[["stand","supine","right","left"],"次の自分の番、自分が振るキャラコロの向きを、このワザで出た向きにする"]]},
+"メタグロス|ワイドプレス":{r:[[["right","left"],"＋30ダメージ"]]},
+"メタグロス|コメットパンチ":{r:[[["stand","supine"],"＋40ダメージ"]]},
+"メタグロス|ストレートスタンプ":{r:[[["stand","supine","prone"],"＋20ダメージ"]]},
+"メタグロス|ベビーボンバー":{r:[[["stand","right","left"],"＋40ダメージ"],[["invert","supine","prone"],"次の自分の番：自分のエネコロ−2"]]},
+"メタグロス|だいばくはつ":{b:"このポケモンにも120ダメージ",r:[[["stand"],"このワザの自分へのダメージをなくす"]]},
+"メタグロス|こうてつのツメ":{r:[[["stand"],"＋30ダメージ"]]},
+
+"ルカリオ|キック":{r:[[["stand","supine","prone"],"＋10ダメージ"]]},
+"ルカリオ|はどうナックル":{r:[[["stand","supine","prone"],"残りHP80以下なら＋30ダメージ"]]},
+"ルカリオ|はっけい":{r:[[["stand","supine"],"次の相手の番：相手のエネコロ−1"]]},
+"ルカリオ|まわしげり":{r:[[["stand","right","left"],"＋30ダメージ"]]},
+"ルカリオ|オーラづき":{r:[[["stand","supine","right","left"],"残りHP80以下なら、次の相手の番、このポケモンが受けるダメージ−20"]]},
+"ルカリオ|はどうだん":{r:[[["stand","supine","prone"],"残りHP40以下なら＋50ダメージ"]]},
+"ルカリオ|メタルクロー":{r:[[["stand"],"＋40ダメージ"]]},
+"ルカリオ|しんくうは":{r:[[["stand"],"＋50ダメージ"]]},
+
+"カイロス|しゅうちゅう":{r:[[["stand","right","left"],"次の自分の番：自分のエネコロ＋2"]]},
+"カイロス|たえる":{b:"次の相手の番、このポケモンが受けるダメージ−20",r:[[["stand","supine","prone"],"受けるダメージをさらに−20"]]},
+"カイロス|つのでたたく":{r:[[["stand","right","left"],"＋30ダメージ"]]},
+"カイロス|ハサミギロチン":{r:[[["stand"],"150ダメージ与える"]]},
+"カイロス|かわらわり":{r:[[["stand","supine"],"＋20ダメージ"]]},
+"カイロス|チャージばさみ":{r:[[["stand","supine"],"次の自分の番：自分のエネコロ＋1"]]},
+"カイロス|ぎゃくじょうスイング":{r:[[["stand","right","left"],"前の自分の番、自分のワザのエネコロが失敗していたなら＋40ダメージ"]]},
+"カイロス|とつげき":{r:[[["stand","supine"],"＋20ダメージ"],[["invert","prone"],"このポケモンにも20ダメージ"]]},
+"カイロス|ひっさつばさみ":{r:[[["stand"],"＋80ダメージ"]]},
+"カイロス|じごくぐるま":{b:"このポケモンにも20ダメージ",r:[[["stand","invert","supine","prone"],"＋30ダメージ"]]},
+
+"イワーク|がんせきタックル":{b:"次の相手の番、このポケモンが受けるダメージ−10",r:[[["stand","right","left"],"受けるダメージをさらに−20"]]},
+"イワーク|いわおとし":{r:[[["stand","supine"],"＋30ダメージ"]]},
+"イワーク|ロックウォール":{r:[[["stand","supine","right","left"],"次の相手の番、このポケモンが受けるダメージ−30"]]},
+"イワーク|ハードインパクト":{r:[[["stand","right","left"],"＋30ダメージ"],[["invert"],"次の自分の番：自分のエネコロ−1"]]},
+"イワーク|ジャイロボール":{r:[[["stand","supine","right","left"],"相手もキャラコロを振り、逆立・うつぶせなら＋60ダメージ"]]},
+"イワーク|ぶつかる":{r:[[["stand","supine","prone"],"＋10ダメージ"]]},
+"イワーク|いわなだれ":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"イワーク|ワイルドタックル":{r:[[["stand","supine"],"＋20ダメージ"],[["invert","prone","right","left"],"このポケモンにも20ダメージ"]]},
+"イワーク|がんせきバリア":{r:[[["stand","supine"],"次の相手の番、このポケモンが受けるダメージ−50"]]},
+"イワーク|アイアンテール":{r:[[["stand","right","left"],"次の相手の番、このポケモンが受けるダメージ−10"]]},
+
+"フリーザー|アイスウイング":{r:[[["stand","supine","right","left"],"次の相手の番：相手のエネコロ−1"]]},
+"フリーザー|いてつくやいば":{r:[[["stand","right","left"],"次の相手の番、相手はキャラコロを振れない"]]},
+"フリーザー|ブリザードストーム":{r:[[["stand","supine","right","left"],"＋30ダメージ"]]},
+"フリーザー|エアカッター":{r:[[["stand","supine"],"＋30ダメージ"]]},
+"フリーザー|はねやすめ":{b:"このポケモンのHPを20回復",r:[[["stand","right","left"],"さらに20回復"]]},
+"フリーザー|フリーズダイブ":{r:[[["stand","supine"],"＋20ダメージ"]]},
+"フリーザー|アイスショット":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"フリーザー|コールドブレス":{r:[[["stand","right","left"],"次の相手の番：相手のエネコロ−2"]]},
+"フリーザー|ぜったいれいど":{r:[[["stand","supine"],"次の相手の番：相手のエネコロ−2。さらに相手はキャラコロを振れない"]]},
+"フリーザー|そらをとぶ":{r:[[["stand","right","left"],"次の相手の番、このポケモンはワザのダメージを受けない"],[["supine","prone","invert"],"このワザは失敗する"]]},
+
+"サンダー|でんじフラッシュ":{r:[[["stand","supine"],"＋30ダメージ"]]},
+"サンダー|でんきショック":{r:[[["stand","supine","right","left"],"＋10ダメージ"]]},
+"サンダー|ボルトラッシュ":{b:"このワザはキャラコロを合計3回振る",r:[[["stand","right","left"],"このワザでキャラコロが成功するたび＋30ダメージ"]]},
+"サンダー|つばめがえし":{r:[[["stand","supine"],"＋20ダメージ"]]},
+"サンダー|バリバリウイング":{r:[[["stand","right","left"],"＋40ダメージ"]]},
+"サンダー|ダブルサンダー":{b:"このワザはキャラコロを合計2回振る",r:[[["stand","supine","prone"],"このワザでキャラコロが成功するたび＋20ダメージ"]]},
+"サンダー|エレキアロー":{r:[[["stand"],"＋40ダメージ"]]},
+"サンダー|ほうでん":{r:[[["stand","supine","prone"],"＋20ダメージ"]]},
+"サンダー|サンダーチェイン":{r:[[["stand","supine","prone"],"＋30ダメージ。もう1回キャラコロを振る（失敗するまでくり返せる）"]]},
+"サンダー|そらをとぶ":{r:[[["stand","right","left"],"次の相手の番、このポケモンはワザのダメージを受けない"],[["supine","prone","invert"],"このワザは失敗する"]]},
+
+"ファイヤー|ほのおのつばさ":{r:[[["stand","supine"],"＋30ダメージ"],[["right","left"],"このポケモンにも20ダメージ"]]},
+"ファイヤー|ねっぷう":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"ファイヤー|かえんほうしゃ":{r:[[["stand","supine"],"＋40ダメージ"],[["invert","prone","right","left"],"次の自分の番：自分のエネコロ−2"]]},
+"ファイヤー|フレアドライブ":{r:[[["stand","supine","prone"],"＋40ダメージ"],[["invert","right","left"],"このポケモンにも40ダメージ"]]},
+"ファイヤー|ぼうふう":{r:[[["stand"],"＋60ダメージ"]]},
+"ファイヤー|ほのおのうず":{r:[[["stand","supine"],"＋40ダメージ"],[["prone","invert","right","left"],"次の自分の番：自分のエネコロ−2"]]},
+"ファイヤー|ヒートブレス":{r:[[["stand","supine"],"＋40ダメージ"],[["invert","prone"],"このポケモンにも30ダメージ"]]},
+"ファイヤー|もえつきる":{r:[[["supine","prone","invert"],"このワザは失敗する"]]},
+"ファイヤー|ウイングラッシュ":{r:[[["stand","supine","right","left"],"＋10ダメージ"]]},
+"ファイヤー|そらをとぶ":{r:[[["stand","right","left"],"次の相手の番、このポケモンはワザのダメージを受けない"],[["supine","prone","invert"],"このワザは失敗する"]]},
+
+"ベトベター|どくガス":{r:[[["stand","right","left"],"次の相手の番：相手のエネコロ−1"]]},
+"ベトベター|ベトベトなげ":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"ベトベター|どくどくヒール":{r:[[["stand","supine","right","left"],"前の自分の番、「どくガス」のエネコロが成功していたなら、このポケモンのHPを30回復"]]},
+"ベトベター|ヘドロでかこむ":{r:[[["stand","supine","prone"],"相手のワザを1つ選ぶ。次の相手の番、そのワザは使えない"]]},
+"ベトベター|ベノムパンチ":{r:[[["stand","supine"],"＋30ダメージ"]]},
+"ベトベター|ベノムスリップ":{r:[[[],"相手もキャラコロを振り、うつぶせ・逆立・右向き・左向きなら＋20ダメージ"]]},
+"ベトベター|どくどくボンバー":{r:[[["stand","supine","prone"],"前の自分の番、「どくガス」のエネコロが成功していたなら＋30ダメージ"]]},
+"ベトベター|ヘドロタックル":{r:[[["stand","right","left"],"＋40ダメージ"],[["invert","supine","prone"],"このポケモンにも20ダメージ"]]},
+"ベトベター|いやがらせベノム":{r:[[["stand","right","left"],"前の相手の番、相手のワザのエネコロが失敗していたなら＋50ダメージ"]]}
+};
+function effectHtml(pokemon,n){
+ const f=MOVE_FX[`${pokemon}|${n}`];
+ if(!f)return "";
+ const base=f.b?`<div class="baseFx"><b>ワザ効果</b><span>${f.b}</span></div>`:"";
+ const rows=(f.r||[]).map(r=>{
+   const poses=r[0].length?r[0].map(p=>poseIcon(p)).join(""):'<span class="otherRoll">相手のキャラコロ</span>';
+   return `<div class="fxRow"><span class="poses">${poses}</span><span>${r[1]}</span></div>`;
+ }).join("");
+ return `<div class="moveFx">${base}${rows}</div>`;
+}
+function openDexDetail(name){
+ const p=POKEDEX.find(x=>x.name===name);
+ if(!p)return;
+ document.getElementById('dexInfo').innerHTML=`<h2>${p.name}</h2><div class="dex-meta"><span class="dex-chip">HP ${p.hp}</span><span class="dex-chip">タイプ ${typeDisplay(p.type)}</span><span class="dex-chip">弱点 ${typeDisplay(p.weak)}</span></div><h3>ワザ</h3>${p.moves.map(m=>`<div class="move-card"><div class="move-top"><span class="move-name">${m[0]}${m[3]==="promo"?'<span class="promo-badge">プロモ</span>':''}</span><span class="move-cost" aria-label="必要エネルギー ${m[1]}">${energyIcons(m[1])}</span></div><div class="move-dmg">${m[2]===null?'ダメージなし':`基本ダメージ ${m[2]}`}</div>${effectHtml(p.name,m[0])}</div>`).join('')}<p class="dex-note">※ 2026年版の確認済み情報を表示しています。通常ワザ・プロモワザのワザ効果／キャラコロ効果を反映しています。</p>`;
+ document.getElementById('dexListPanel').classList.add('hidden');
+ document.getElementById('dexDetailPanel').classList.remove('hidden');
+ window.scrollTo(0,0);
+}
+function backToDexList(){
+ document.getElementById('dexDetailPanel').classList.add('hidden');
+ document.getElementById('dexListPanel').classList.remove('hidden');
+ window.scrollTo(0,0);
+}
+function openPokedex(){
+ document.getElementById('meisterHome').style.display='none';
+ document.getElementById('pokedexTool').style.display='block';
+ renderDexList();
+ backToDexList();
+}
+function backFromPokedex(){
+ document.getElementById('pokedexTool').style.display='none';
+ document.getElementById('meisterHome').style.display='block';
+ window.scrollTo(0,0);
+}
 </script>
 </body></html>
+<style id="dex-vertical-center-fix">
+.dex-chip{
+  display:inline-flex!important;
+  align-items:center!important;
+  vertical-align:middle!important;
+  line-height:1!important;
+}
+.dex-chip .typeText{
+  display:inline-flex!important;
+  align-items:center!important;
+  vertical-align:middle!important;
+  line-height:1!important;
+}
+.dex-chip .typeIcon{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  vertical-align:middle!important;
+  margin:0!important;
+}
+.dex-chip b{
+  display:inline-flex!important;
+  align-items:center!important;
+  line-height:1!important;
+}
+</style>
+
+<style id="dex-label-spacing-fix">
+.dex-chip{justify-content:flex-start!important;text-align:left!important;}
+.dex-chip .typeText{gap:6px!important;}
+</style>
+
+<style id="dex-spacing-v7">
+.dex-chip{gap:8px!important;}
+.dex-chip .typeText{gap:0!important;}
+</style>
+
+<style id="dex-energy-icons-v8">
+.move-cost{display:inline-flex!important;align-items:center!important;justify-content:flex-end!important;gap:2px!important}
+.move-cost .typeIcon{width:27px!important;height:27px!important;flex:0 0 27px!important}
+.move-cost .typeIcon svg{width:18px!important;height:18px!important}
+</style>
+
+<style id="dex-energy-icons-v9">
+.move-cost{gap:1px!important;flex-wrap:nowrap!important}
+.move-cost .typeIcon{width:25px!important;height:25px!important;flex:0 0 25px!important}
+.move-cost .typeIcon svg{width:17px!important;height:17px!important}
+</style>
+
+<style>
+.moveFx{margin-top:9px;padding-top:8px;border-top:1px dashed #b9dceb}
+.fxRow{display:flex;align-items:center;gap:7px;margin-top:5px;font-size:13px;font-weight:700;line-height:1.4;color:#183b68}
+.fxRow:first-child{margin-top:0}.poses{display:inline-flex;gap:2px;flex:none}
+.poseIcon{display:inline-flex;width:25px;height:25px;border:2px solid #14213d;border-radius:7px;background:#fff;align-items:center;justify-content:center}
+.poseIcon svg{width:21px;height:21px;fill:#f6efe5;stroke:#14213d;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transform-origin:center}
+</style>
+
+<style id="pose-fix-v11">
+.poseIcon .faceDot{fill:#14213d;stroke:none}
+.poseIcon .backMark{fill:none;stroke:#14213d;stroke-width:1.8}
+</style>
+
+<style id="pose-clarity-v12">
+.poseIcon[title="あおむけ"]{background:#fff}
+.poseIcon[title="うつぶせ"]{background:#e7edf5}
+.poseIcon[title="うつぶせ"] svg{fill:#9aa8b8!important}
+.poseIcon[title="うつぶせ"] .backMark{stroke:#14213d!important;stroke-width:2.2!important;fill:none!important}
+</style>
+
+<style id="pose-pictogram-v13">
+.poseIcon{background:#fff!important}
+.poseIcon svg{fill:#fff!important;stroke:#14213d!important;stroke-width:2.5!important}
+.poseIcon .faceDot{fill:#14213d!important;stroke:none!important}
+.poseIcon .backMark{fill:none!important;stroke:#14213d!important;stroke-width:2.5!important}
+.poseIcon.prone{background:#eef2f7!important}
+</style>
+
+<style id="pose-final-clarity-v14">
+.poseIcon .faceDot{fill:#14213d!important;stroke:none!important}
+.poseIcon .faceMark{fill:none!important;stroke:#14213d!important;stroke-width:1.8!important;stroke-linecap:round}
+.poseIcon[title="うつぶせ"] svg{fill:#dfe6ee!important}
+.poseIcon[title="うつぶせ"] .backMark{stroke:#14213d!important;stroke-width:2.6!important;stroke-linecap:round}
+</style>
+<style id="pose-v16">
+.poseIcon[title="あおむけ"] svg,.poseIcon[title="うつぶせ"] svg{transform:none!important;fill:#fff!important;stroke:#14213d!important;stroke-width:2.5!important}
+.poseIcon .floor{fill:none!important;stroke:#9fb4c8!important;stroke-width:1.2!important;stroke-dasharray:2 2}
+.poseIcon .eye{fill:#14213d!important;stroke:none!important}
+.poseIcon .mark{fill:none!important;stroke:#14213d!important;stroke-width:1.8!important}
+.poseIcon[title="うつぶせ"] svg{transform:translateY(-3px)!important}
+</style><style id="promo-v23">
+.promo-badge{display:inline-flex;align-items:center;margin-left:8px;padding:2px 7px;border:2px solid #d88700;border-radius:999px;background:#fff4cf;color:#9a5a00;font-size:12px;font-weight:800;line-height:1.2;vertical-align:middle}
+</style>
+<style id="all-effects-v24">
+.baseFx{display:flex;gap:8px;align-items:flex-start;margin:6px 0 8px;padding:7px 9px;background:#f6fbff;border-radius:9px;font-size:13px;line-height:1.45}
+.baseFx b{white-space:nowrap;color:#07539a}
+.otherRoll{display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:2px 6px;border:1.5px solid #14213d;border-radius:6px;font-size:10px;font-weight:800;white-space:nowrap}
+</style>
