@@ -59,6 +59,33 @@ body{background:#eaf8ff}
 #entry select{border:3px solid #10275a!important;border-radius:16px!important;background:#fff!important}
 #entry button,#next{background:#91d8f5!important;color:#10275a!important;border:3px solid #159ee5!important;border-radius:16px!important;box-shadow:none!important}
 #entry button:hover,#next:hover{transform:none}
+.calc-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:8px 0 10px}
+.calc-mode{border:1.5px solid #9ed8f5;border-radius:10px;background:#f5fbff;color:#31536e;font-weight:800;font-size:11px;padding:8px 2px}
+.calc-mode.active{background:#087fc3;color:#fff;border-color:#087fc3}
+.calc-coro-info{font-size:12px;color:#52677d;margin:0 0 9px;line-height:1.5}
+
+.calc-main-result{border-width:2.5px;background:#e2f5ff;box-shadow:0 2px 8px #087fc326}
+.calc-main-result span::after{content:" 基本";font-size:9px;font-weight:900;color:#087fc3}
+.calc-card:first-of-type{margin-top:8px}
+.calc-move-grid{display:grid;gap:7px}.calc-move-results{display:grid;gap:9px}
+.calc-move-result{border:1.5px solid #b9dff4;border-radius:12px;padding:9px;background:#fff}
+.calc-move-result-name{font-weight:900;color:#123b62;margin-bottom:7px}
+.calc-move-result-row{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.calc-move-result-cell{border:1px solid #cfe5f2;border-radius:8px;padding:6px 2px;text-align:center;background:#f8fcff}
+.calc-move-result-cell span{display:block;font-size:10px;color:#557080}.calc-move-result-cell b{display:block;font-size:14px;color:#123b62}
+.calc-move-result-cell.main{border:2px solid #087fc3;background:#e2f5ff}
+.calc-move-result-cell.main span::after{content:" 基本";font-size:8px;font-weight:900;color:#087fc3}
+
+/* v12 compact icon Ene-Koro */
+.calc-die{padding:8px!important;margin:0 0 8px!important}
+.calc-die h3{margin:0 0 5px!important;font-size:15px!important}
+.calc-face-grid{gap:5px!important}
+.calc-face{min-height:44px!important;padding:4px 5px!important;font-size:0!important}
+.calc-face option{font-size:16px}
+.calc-face-icon{display:flex;align-items:center;justify-content:center;gap:2px;font-size:20px;line-height:1}
+.calc-move-result{padding:9px}
+.calc-move-result-effect{font-size:12px;line-height:1.45;color:#516879;margin:-2px 0 7px}
+.calc-move-result-row{display:grid!important}
 </style>
 <style id="meister-home-style">
 #meisterHome{min-height:100vh;background:#eaf8ff;padding:22px 14px 34px;color:#10275a;font-family:inherit}
@@ -95,6 +122,169 @@ body{background:#eaf8ff}
 .dex-note{font-size:11px;color:#667789;line-height:1.5;margin-top:12px}
 </style>
 
+
+<style id="calculator-v1-css">
+.calc-wrap{max-width:760px;margin:0 auto;padding:0 14px 30px}
+.calc-card{background:#fff;border:3px solid #159ee5;border-radius:18px;padding:14px;margin:12px 0;box-shadow:0 4px 12px #0b4c7a12}
+.calc-label{display:block;font-weight:900;color:#073f82;margin:8px 0 5px}
+.calc-select{width:100%;padding:11px;border:2px solid #b9dff4;border-radius:12px;background:#fff;font-size:16px}
+.calc-title{font-size:18px;font-weight:1000;color:#073f82;margin-bottom:5px}
+.calc-help{font-size:12px;color:#607286;line-height:1.55;margin:0 0 12px}
+.calc-die{border-top:1px dashed #b8d6e8;padding:10px 0}.calc-die:first-child{border-top:0}
+.calc-die-name{font-weight:900;color:#173a67;margin-bottom:7px}
+.calc-faces{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.calc-face{width:100%;min-width:0;padding:8px 2px;border:1.5px solid #9bcce8;border-radius:9px;background:#f9fdff;font-size:12px}
+.calc-req{font-size:14px;font-weight:800;margin:7px 0 11px}
+.calc-results{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:6px}
+.calc-result{background:#eef9ff;border:1.5px solid #9ed8f5;border-radius:10px;text-align:center;padding:8px 2px}
+.calc-result b{display:block;color:#07539a;font-size:17px}.calc-result span{font-size:10px;color:#52677d}
+@media(max-width:390px){.calc-results{gap:3px}.calc-result b{font-size:15px}.calc-result{padding:7px 1px}.calc-faces{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<style id="calculator-v13-redesign">
+.calc-move-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.calc-move-pick{min-width:0;border:1.5px solid #b9dff4;border-radius:12px;padding:7px;background:#f8fcff}
+.calc-move-pick .calc-select{font-size:15px;padding:8px 28px 8px 8px;min-height:44px}
+.calc-move-pick-fx{font-size:11px;line-height:1.35;color:#536b7c;margin-top:5px;min-height:30px}
+.calc-dice-compact{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.calc-die{min-width:0!important;padding:6px!important;margin:0!important;border:1.5px solid #b9dff4!important;border-radius:12px!important}
+.calc-die-name{font-size:12px!important;margin-bottom:4px!important;text-align:center}
+.calc-faces{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px!important}
+.calc-face-btn{display:flex;align-items:center;justify-content:center;min-width:0;width:100%;height:42px;padding:2px!important;margin:0!important;border:1.5px solid #9fd5ed!important;border-radius:9px!important;background:#f8fcff!important;box-shadow:none!important}
+.calc-face-btn .typeIcon{width:25px;height:25px;flex:0 0 25px}.calc-face-btn .typeIcon svg{width:17px;height:17px}
+.calc-face-btn .pairIcons .typeIcon{width:20px;height:20px;flex:0 0 20px}.calc-face-btn .pairIcons .typeIcon svg{width:14px;height:14px}
+.calc-picker-overlay{position:fixed;inset:0;background:#10275a66;z-index:1000;display:flex;align-items:flex-end;padding:12px}
+.calc-picker-overlay.hidden{display:none}
+.calc-picker-sheet{width:min(520px,100%);margin:auto;background:white;border:3px solid #159ee5;border-radius:20px;padding:12px}
+.calc-picker-title{font-weight:900;font-size:18px;margin-bottom:8px}.calc-picker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.calc-picker-option{height:50px;margin:0!important;padding:4px!important;background:#fff!important;border:2px solid #b9dff4!important;box-shadow:none!important}
+.calc-picker-option.selected{border-color:#087fc3!important;background:#e2f5ff!important}
+.calc-picker-option .typeIcon{width:28px;height:28px}.calc-picker-option .typeIcon svg{width:19px;height:19px}
+.calc-picker-close{width:100%;margin:10px 0 0!important;box-shadow:none!important}
+.calc-move-results{display:grid!important;gap:8px!important;margin-top:10px}
+.calc-move-result-row{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:3px!important}
+.calc-move-result-cell{min-width:0!important;padding:5px 1px!important}.calc-move-result-cell b{font-size:13px!important}
+@media(max-width:380px){.calc-dice-compact{gap:4px}.calc-die{padding:4px!important}.calc-face-btn{height:38px}.calc-move-pick-fx{font-size:10px}}
+</style>
+
+<style id="calculator-v14-fixes">
+.calc-hidden-select{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.calc-move-button{width:100%;height:100%;min-height:92px;margin:0!important;padding:9px!important;text-align:left!important;background:#fff!important;border:1.5px solid #b9dff4!important;border-radius:11px!important;box-shadow:none!important;color:#123b62!important}
+.calc-move-button-name{display:block;font-size:16px;font-weight:900;line-height:1.25}
+.calc-move-button-detail{display:block;margin-top:6px;font-size:11px;font-weight:500;line-height:1.35;color:#536b7c;white-space:normal}
+.calc-move-picker-sheet{max-height:82vh;display:flex;flex-direction:column}
+.calc-move-picker-grid{display:grid;gap:7px;overflow-y:auto;padding:1px}
+.calc-move-option{display:block;width:100%;margin:0!important;padding:10px!important;text-align:left!important;background:#fff!important;border:2px solid #b9dff4!important;border-radius:11px!important;box-shadow:none!important;color:#123b62!important}
+.calc-move-option.selected{border-color:#087fc3!important;background:#e2f5ff!important}
+.calc-move-option b{display:block;font-size:16px}.calc-move-option span{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:#536b7c;white-space:normal}
+.calc-face-btn{overflow:hidden!important}
+.calc-face-btn .pairIcons{display:flex!important;align-items:center!important;justify-content:center!important;gap:1px!important;width:100%!important;min-width:0!important;overflow:hidden!important}
+.calc-face-btn .pairIcons .typeIcon{width:17px!important;height:17px!important;flex:0 0 17px!important;border-width:1.5px!important}
+.calc-face-btn .pairIcons .typeIcon svg{width:12px!important;height:12px!important}
+.calc-face-btn .plusMini{font-size:9px!important;line-height:1!important;flex:0 0 auto!important;margin:0!important}
+.calc-move-result-effect{display:none!important}
+@media(max-width:380px){
+ .calc-face-btn .pairIcons .typeIcon{width:15px!important;height:15px!important;flex-basis:15px!important}
+ .calc-face-btn .pairIcons .typeIcon svg{width:10px!important;height:10px!important}
+ .calc-face-btn .plusMini{font-size:8px!important}
+}
+</style>
+
+<style id="calculator-v15-move-details">
+.calc-move-button-detail,.calc-move-option span{white-space:normal!important}
+.calc-move-button-detail{font-size:10.5px!important;line-height:1.42!important}
+.calc-move-option span{font-size:12px!important;line-height:1.5!important}
+</style>
+
+<style id="calculator-v18-native-rebuild">
+.v18-move-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.v18-move-slot{min-width:0;border:1.5px solid #b9dff4;border-radius:12px;padding:7px;background:#f8fcff}
+.v18-move-select{font-size:15px!important;font-weight:800!important;padding:8px 26px 8px 7px!important;min-height:44px!important}
+.v18-move-detail{font-size:11px;line-height:1.38;color:#536b7c;margin-top:6px}
+.v18-top{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin-bottom:4px}
+.v18-req{display:inline-flex;align-items:center;gap:1px}.v18-req .typeIcon{width:19px;height:19px;flex:0 0 19px}.v18-req .typeIcon svg{width:13px;height:13px}
+.v18-fxrow{display:flex;align-items:flex-start;gap:4px;margin-top:3px}.v18-poses{display:inline-flex;gap:1px;flex-wrap:wrap;flex:0 0 auto}.v18-poses .poseIcon{width:20px;height:20px}
+.v18-dice{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;width:100%}
+.v18-die{min-width:0;border:1.5px solid #b9dff4;border-radius:12px;padding:5px;overflow:hidden}
+.v18-die-title{text-align:center;font-size:12px;font-weight:900;margin-bottom:4px}
+.v18-faces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.v18-face{position:relative;min-width:0;height:48px;border:1.5px solid #9fd5ed;border-radius:9px;background:#f8fcff;overflow:hidden}
+.v18-face-visual{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.v18-face-visual>.typeIcon{width:27px;height:27px}.v18-face-visual>.typeIcon svg{width:18px;height:18px}
+.v18-face-select{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;z-index:5!important}
+.v18-diag{position:relative;display:block;width:100%;height:100%}.v18-tl{position:absolute;left:2px;top:2px}.v18-br{position:absolute;right:2px;bottom:2px}
+.v18-diag .typeIcon{width:18px;height:18px}.v18-diag .typeIcon svg{width:12px;height:12px}
+.v18-slash{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:900;color:#536b7c}
+</style>
+
+<style id="calculator-v19-coro-effect-below">
+.v18-fxrow{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:flex-start!important;
+ gap:3px!important;
+ margin-top:5px!important;
+}
+.v18-poses{
+ display:flex!important;
+ align-items:center!important;
+ gap:2px!important;
+ flex-wrap:wrap!important;
+ width:100%!important;
+}
+.v18-fxrow>span:last-child{
+ display:block!important;
+ width:100%!important;
+ line-height:1.4!important;
+ overflow-wrap:anywhere!important;
+ word-break:normal!important;
+}
+</style>
+
+<style id="calculator-v21-picker-refine">
+.v20-face-options{
+ display:grid!important;
+ grid-template-columns:repeat(4,48px)!important;
+ gap:7px!important;
+ justify-content:center!important;
+}
+.v20-face-option{
+ width:48px!important;
+ height:48px!important;
+ min-width:48px!important;
+ padding:0!important;
+ border:1.5px solid #9fd5ed!important;
+ border-radius:9px!important;
+ box-shadow:none!important;
+}
+.v20-face-option.selected{
+ border:2px solid #139bd3!important;
+ box-shadow:0 0 0 2px rgba(19,155,211,.12)!important;
+}
+.v20-face-option .v18-face-visual>.typeIcon{
+ width:27px!important;height:27px!important;
+}
+.v20-face-option .v18-diag .typeIcon{
+ width:18px!important;height:18px!important;
+}
+.v20-face-option .v18-slash{font-size:18px!important}
+@media(max-width:380px){
+ .v20-face-options{grid-template-columns:repeat(4,44px)!important;gap:6px!important}
+ .v20-face-option{width:44px!important;height:44px!important;min-width:44px!important}
+}
+</style>
+
+
+<style id="calculator-v24b-rate-colors">
+.calc-move-result-cell.rate-low{background:#fdecec!important;}
+.calc-move-result-cell.rate-mid{background:#fff4dc!important;}
+.calc-move-result-cell.rate-high{background:#edf8e8!important;}
+/* 基本3個の青枠は維持し、背景だけ成功率色を優先 */
+.calc-move-result-cell.main.rate-low{background:#fdecec!important;}
+.calc-move-result-cell.main.rate-mid{background:#fff4dc!important;}
+.calc-move-result-cell.main.rate-high{background:#edf8e8!important;}
+</style>
+
 </head><body>
 <div id="meisterHome">
  <div class="meister-wrap">
@@ -102,7 +292,7 @@ body{background:#eaf8ff}
   <main class="meister-menu">
    <section class="meister-card"><h2>📝 エントリーカード作成</h2><p>大会用のポケモン・エネコロを選んで、エントリー画像を作成できます。</p><button class="meister-btn" type="button" onclick="openEntryTool()">使ってみる</button></section>
    <section class="meister-card"><h2>📖 ポケモン・ワザ図鑑</h2><p>プラコロに登場するポケモンのタイプ・弱点・ワザを確認できます。</p><button class="meister-btn" type="button" onclick="openPokedex()">見る</button></section>
-   <section class="meister-card meister-disabled"><h2>🎲 確率計算ツール</h2><p>エネコロの成功率などを計算・比較できる機能を追加予定です。</p><span class="meister-soon">COMING SOON</span></section>
+   <section class="meister-card"><h2>🎲 確率計算ツール</h2><p>ポケモン・ワザ・エネコロを選んで、ワザの成功確率を計算できます。</p><button class="meister-btn" type="button" onclick="openCalculator()">計算する</button></section>
    <section class="meister-card meister-disabled"><h2>⚔️ 対戦シミュレーター</h2><p>ポケモン同士の対戦をシミュレーションできる機能を追加予定です。</p><span class="meister-soon">COMING SOON</span></section>
   </main>
   <footer class="meister-footer">本サイトは非公式のファン制作ツールです。<br>各権利者・関係各社とは関係ありません。</footer>
@@ -120,6 +310,42 @@ body{background:#eaf8ff}
    <button class="dex-detail-back" type="button" onclick="backToDexList()">← ポケモン一覧へ戻る</button>
    <section id="dexInfo" class="pokedex-info"></section>
   </section>
+ </div>
+</div>
+
+
+<div id="calculatorTool" style="display:none">
+ <button class="meister-back" type="button" onclick="backFromCalculator()">← コロメイトへ戻る</button>
+ <div class="calc-wrap">
+  <header class="pokedex-head"><h1>🎲 確率計算ツール</h1><p>対戦で使う4つのワザを選び、エネコロを調整しながら成功率を比較できます。</p></header>
+  <section class="calc-card">
+   <div class="calc-title">ワザを選ぶ</div>
+   <label class="calc-label">ポケモン</label><select id="calcPokemon" class="calc-select"></select>
+   <label class="calc-label">対戦で使う4つのワザ</label>
+<div class="calc-move-grid v18-move-grid">
+ <div class="v18-move-slot"><select id="calcMove1" class="calc-select v18-move-select"></select><div id="calcMoveDetail1" class="v18-move-detail"></div></div>
+ <div class="v18-move-slot"><select id="calcMove2" class="calc-select v18-move-select"></select><div id="calcMoveDetail2" class="v18-move-detail"></div></div>
+ <div class="v18-move-slot"><select id="calcMove3" class="calc-select v18-move-select"></select><div id="calcMoveDetail3" class="v18-move-detail"></div></div>
+ <div class="v18-move-slot"><select id="calcMove4" class="calc-select v18-move-select"></select><div id="calcMoveDetail4" class="v18-move-detail"></div></div>
+</div>
+  </section>
+  <section class="calc-card">
+   <div class="calc-title">① エネコロを設定</div>
+   <p class="calc-help">ポケモンを選ぶと標準のエネコロに自動で切り替わります。必要なら各面を変更できます。</p>
+   <div id="calcDice"></div>
+  </section>
+  <section class="calc-card">
+   <div class="calc-title">② 成功確率</div>
+   <div id="calcRequirement" class="calc-req"></div>
+   <div class="calc-modes" role="group" aria-label="確率の種類">
+<button type="button" class="calc-mode active" data-mode="energy" onclick="setCalcMode('energy')">エネコロ成功</button>
+<button type="button" class="calc-mode" data-mode="both" onclick="setCalcMode('both')">＋キャラコロ成功</button>
+<button type="button" class="calc-mode" data-mode="fail" onclick="setCalcMode('fail')">＋デメリット効果</button>
+</div>
+<div id="calcCoroInfo" class="calc-coro-info"></div>
+<div id="calcResults" class="calc-move-results"></div>
+  </section>
+  <p class="dex-note">※ 各面は同じ確率（1/6）で計算します。特殊なワザは、必要な場合だけ結果欄に注意を表示します。</p>
  </div>
 </div>
 
@@ -160,7 +386,22 @@ body{background:#eaf8ff}
 </main>
 <script>
 const pokemons = [{"name": "フシギダネ", "type": "草", "weak": "炎", "energy": "草"}, {"name": "ヒトカゲ", "type": "炎", "weak": "水", "energy": "炎"}, {"name": "ゼニガメ", "type": "水", "weak": "雷", "energy": "水"}, {"name": "ピカチュウ", "type": "雷", "weak": "闘", "energy": "雷"}, {"name": "ベトベター", "type": "悪", "weak": "闘", "energy": "悪"}, {"name": "イワーク", "type": "闘", "weak": "草", "energy": "闘"}, {"name": "カイロス", "type": "草", "weak": "空", "energy": "草"}, {"name": "イーブイ", "type": "無", "weak": "闘", "energy": "空"}, {"name": "フリーザー", "type": "水", "weak": "鋼", "energy": "水"}, {"name": "サンダー", "type": "雷", "weak": "闘", "energy": "雷"}, {"name": "ファイヤー", "type": "炎", "weak": "水", "energy": "炎"}, {"name": "ミュウ", "type": "超", "weak": "悪", "energy": "超"}, {"name": "ゲンガー", "type": "悪", "weak": "超", "energy": "悪"}, {"name": "メタグロス", "type": "鋼", "weak": "炎", "energy": "鋼"}, {"name": "ルカリオ", "type": "闘", "weak": "炎", "energy": "闘"}];
-const typesA=['草','炎','水','雷','鋼'], typesB=['悪','闘','超','空'], all=['草','炎','水','雷','悪','超','闘','鋼','空'];
+const ENEKORO_MASTER={
+ typesA:['草','炎','水','雷','鋼'],
+ typesB:['悪','闘','超','空'],
+ all:['草','炎','水','雷','悪','超','闘','鋼','空'],
+ doubleFaces:["炎/炎", "水/水", "草/草", "雷/雷", "闘/闘", "空/空", "悪/悪", "超/超", "鋼/鋼", "超/空", "悪/空", "炎/雷", "水/闘", "草/悪", "雷/鋼", "炎/鋼", "超/悪", "闘/鋼", "炎/空", "雷/空", "水/空", "草/闘"]
+};
+const typesA=ENEKORO_MASTER.typesA, typesB=ENEKORO_MASTER.typesB, all=ENEKORO_MASTER.all;
+function doublePartners(first){
+ const result=[];
+ for(const face of ENEKORO_MASTER.doubleFaces){
+   const [a,b]=face.split('/');
+   if(a===first&&!result.includes(b))result.push(b);
+   if(b===first&&!result.includes(a))result.push(a);
+ }
+ return result;
+}
 let selected=null, dice=[];
 
 const $=id=>document.getElementById(id);
@@ -219,10 +460,18 @@ function openPicker(btn){
 function choosePicker(value){
  if(!activePicker)return;
  const i=+activePicker.dataset.d,k=activePicker.dataset.k,p=activePicker.dataset.p;
- if(p==='') dice[i][k]=value; else dice[i][k][+p]=value;
+ if(p==='') dice[i][k]=value; else {
+   const part=+p;
+   dice[i][k][part]=value;
+   if((k==='f5'||k==='f6')&&part===0){
+     const partners=doublePartners(value);
+     if(!partners.includes(dice[i][k][1])) dice[i][k][1]=partners[0];
+   }
+ }
  activePicker.dataset.value=value;
  activePicker.querySelector('.pickCurrent').innerHTML=`${preview(value)}${value==='FREE'?'':`<b>${value}</b>`}`;
  closePicker();
+ if(k==='f5'||k==='f6') renderSettings();
 }
 function closePicker(){
  $('pickerOverlay').classList.add('hidden');
@@ -235,8 +484,8 @@ function renderSettings(){
  <div class="faceControl"><span class="faceLabel">面②</span>${selector(i,'f2',[...typesB,'FREE'],d.f2)}</div>
  <div class="faceControl"><span class="faceLabel">面③</span>${selector(i,'f3',all,d.f3)}</div>
  <div class="faceControl"><span class="faceLabel">面④</span>${selector(i,'f4',all,d.f4)}</div>
- <div class="faceControl double"><span class="faceLabel">面⑤</span>${selector(i,'f5',all,d.f5[0],0)}<span class="plusSetting">＋</span>${selector(i,'f5',all,d.f5[1],1)}</div>
- <div class="faceControl double"><span class="faceLabel">面⑥</span>${selector(i,'f6',all,d.f6[0],0)}<span class="plusSetting">＋</span>${selector(i,'f6',all,d.f6[1],1)}</div></div>`).join('');
+ <div class="faceControl double"><span class="faceLabel">面⑤</span>${selector(i,'f5',all,d.f5[0],0)}<span class="plusSetting">＋</span>${selector(i,'f5',doublePartners(d.f5[0]),d.f5[1],1)}</div>
+ <div class="faceControl double"><span class="faceLabel">面⑥</span>${selector(i,'f6',all,d.f6[0],0)}<span class="plusSetting">＋</span>${selector(i,'f6',doublePartners(d.f6[0]),d.f6[1],1)}</div></div>`).join('');
  document.querySelectorAll('#diceSettings .pickerBtn').forEach(btn=>{
    btn.onclick=()=>openPicker(btn);
  });
@@ -397,8 +646,8 @@ const POKEDEX=[
 {name:'フシギダネ',type:'草',weak:'炎',hp:120,moves:[['つるのむち','草×1','10'],['はっぱカッター','草×2','20'],['やどりぎのタネ','草×2','10'],['くさむすび','草×3','30'],['とつげき','草×3','30'],['ギガドレイン','草×4','40'],['アシッドボム','悪×1＋無×2','10'],['アロマストーム','草×4','30','promo']]},
 {name:'ヒトカゲ',type:'炎',weak:'水',hp:120,moves:[['ひのこ','炎×2','20'],['ヒートアップ','炎×2','10'],['かえんほうしゃ','炎×3','40'],['ほのおのキバ','炎×4','30'],['フレアストーム','無×5','20'],['かみなりパンチ','雷×1＋無×2','10'],['メタルクロー','鋼×1＋無×2','20'],['フレイムアップ','炎×3','20','promo']]},
 {name:'ゼニガメ',type:'水',weak:'雷',hp:120,moves:[['みずでっぽう','水×1','10'],['からにこもる','水×1',null],['みずのはどう','水×2','20'],['シェルアタック','水×3','30'],['バブルこうせん','水×3','30'],['ハイドロアンガー','水×4','40'],['マッドショット','闘×1＋無×3','30'],['カチカチこうら','水×3','20','promo']]},
-{name:'ピカチュウ',type:'雷',weak:'闘',hp:120,moves:[['かじる','雷×1','10'],['でんきショック','雷×2','10'],['エレキラッシュ','雷×2','20'],['10まんボルト','雷×3','30'],['かみなり','雷×3','20'],['ボルテッカー','雷×4','40'],['アイアンテール','鋼×1','20']]},
-{name:'イーブイ',type:'無',weak:'闘',hp:120,moves:[['しっぽではたく','空×1','10'],['たいあたり','空×2','10'],['とっしん','空×2','30'],['はねまわる','空×3',null],['ぜんりょくダッシュ','無×5','40'],['あまえる','超×1','20'],['かみつく','悪×1＋無×2','10']]},
+{name:'ピカチュウ',type:'雷',weak:'闘',hp:120,moves:[['かじる','雷×1','10'],['でんきショック','雷×2','10'],['エレキラッシュ','雷×2','20'],['10まんボルト','雷×3','30'],['かみなり','雷×3','20'],['ボルテッカー','雷×4','40'],['アイアンテール','鋼×1','20'],['クリティカルボルト','雷×4','30','promo']]},
+{name:'イーブイ',type:'無',weak:'闘',hp:120,moves:[['しっぽではたく','空×1','10'],['たいあたり','空×2','10'],['とっしん','空×2','30'],['はねまわる','空×3',null],['ぜんりょくダッシュ','無×5','40'],['あまえる','超×1','20'],['かみつく','悪×1＋無×2','10'],['ねころぶ','空×2',null,'promo']]},
 {name:'ミュウ',type:'超',weak:'悪',hp:120,moves:[['ねんりき','超×1','10'],['サイケこうせん','超×2','20'],['バリアー','超×2',null],['メモリースキップ','超×3','20'],['サイコショット','超×3','30'],['サイコキネシス','超×3','20'],['リフレクション','超×4',null]]},
 {name:'ゲンガー',type:'悪',weak:'超',hp:120,moves:[['ガスでつつむ','悪×1','10'],['ホロウショット','悪×2','20'],['まっさかさま','悪×2','20'],['かげしばり','悪×3','30'],['ヘドロばくだん','悪×3','30'],['ファントムトリック','悪×4','10'],['サイコウェーブ','超×1＋無×3','30'],['ナイトロック','悪×4','30','promo']]},
 {name:'メタグロス',type:'鋼',weak:'炎',hp:120,moves:[['ビーム','鋼×1','10'],['しそくえんざん','鋼×2','20'],['ワイドプレス','鋼×2','20'],['コメットパンチ','鋼×3','20'],['ストレートスタンプ','鋼×3','30'],['ベビーボンバー','鋼×4','40'],['だいばくはつ','無×5','100'],['こうてつのツメ','鋼×1','10','promo']]},
@@ -468,6 +717,7 @@ const MOVE_FX={
 "ピカチュウ|かみなり":{r:[[["stand"],"＋60ダメージ"]]},
 "ピカチュウ|ボルテッカー":{b:"このポケモンにも30ダメージ",r:[[["stand","supine","prone"],"＋40ダメージ"]]},
 "ピカチュウ|アイアンテール":{r:[[["stand","right","left"],"次の相手の番、このポケモンが受けるダメージ−10"]]},
+"ピカチュウ|クリティカルボルト":{r:[[["stand"],"＋60ダメージ"]]},
 
 "イーブイ|しっぽではたく":{r:[[["stand","right","left"],"＋10ダメージ"]]},
 "イーブイ|たいあたり":{r:[[["stand","supine","right","left"],"＋20ダメージ"]]},
@@ -476,6 +726,7 @@ const MOVE_FX={
 "イーブイ|ぜんりょくダッシュ":{r:[[["stand","supine","prone"],"＋40ダメージ"]]},
 "イーブイ|あまえる":{r:[[["stand","supine","right","left"],"次の相手の番：相手のエネコロ−2"]]},
 "イーブイ|かみつく":{r:[[["stand","right","left"],"＋20ダメージ"]]},
+"イーブイ|ねころぶ":{b:"このポケモンのHPを10回復",r:[[["supine","prone"],"さらに20回復"]]},
 
 "ミュウ|ねんりき":{r:[[["stand","right","left"],"＋20ダメージ"]]},
 "ミュウ|サイケこうせん":{r:[[["stand","invert"],"＋30ダメージ"]]},
@@ -612,6 +863,373 @@ function backFromPokedex(){
  window.scrollTo(0,0);
 }
 </script>
+
+<script id="calculator-v1-js">
+
+let calcProbabilityMode="energy";
+const ALL_CORO_DIRS=["stand","invert","supine","prone","left","right"];
+const CORO_LABEL={stand:"立ち",invert:"逆立ち",supine:"あおむけ",prone:"うつぶせ",left:"左向き",right:"右向き"};
+/* Character Koro direction mapping:
+ stand=stand, invert=upsideDown, supine=faceUp, prone=faceDown, left=left, right=right
+ successDirections is explicit data; failure-only moves use the complement of six faces.
+*/
+const CORO_SPECIAL_MASTER={"ピカチュウ|エレキラッシュ":{"kind":"repeat_until_fail","probabilityScope":"first_roll_only","simulationRule":"repeat_same_move_on_success_until_failure","note":"成功方向なら「エレキラッシュ」を再使用し、失敗まで継続"}};
+const CORO_SUCCESS_MASTER={"フシギダネ|つるのむち":["stand","supine","prone"],"フシギダネ|はっぱカッター":["stand","right","left"],"フシギダネ|やどりぎのタネ":["stand","supine","right","left"],"フシギダネ|くさむすび":["stand","supine","prone"],"フシギダネ|とつげき":["stand","supine"],"フシギダネ|ギガドレイン":["stand","right","left"],"フシギダネ|アシッドボム":["stand","right","left"],"フシギダネ|アロマストーム":["stand"],"ヒトカゲ|ひのこ":["stand","supine"],"ヒトカゲ|ヒートアップ":["stand","supine"],"ヒトカゲ|かえんほうしゃ":["stand","supine"],"ヒトカゲ|ほのおのキバ":["stand","supine","prone"],"ヒトカゲ|フレアストーム":["stand","right","left"],"ヒトカゲ|かみなりパンチ":["stand","supine","right","left"],"ヒトカゲ|メタルクロー":["stand"],"ヒトカゲ|フレイムアップ":["stand"],"ゼニガメ|みずでっぽう":["stand","prone"],"ゼニガメ|からにこもる":["prone"],"ゼニガメ|みずのはどう":["stand","right","left"],"ゼニガメ|シェルアタック":["stand","supine","prone"],"ゼニガメ|バブルこうせん":["stand","supine","prone"],"ゼニガメ|ハイドロアンガー":["stand","supine","prone"],"ゼニガメ|マッドショット":["stand","right","left"],"ゼニガメ|カチカチこうら":["prone"],"ピカチュウ|かじる":["stand","supine"],"ピカチュウ|でんきショック":["stand","supine","right","left"],"ピカチュウ|エレキラッシュ":["stand","supine"],"ピカチュウ|10まんボルト":["stand","right","left"],"ピカチュウ|かみなり":["stand"],"ピカチュウ|ボルテッカー":["stand","supine","prone"],"ピカチュウ|アイアンテール":["stand","right","left"],"ピカチュウ|クリティカルボルト":["stand"],"イーブイ|しっぽではたく":["stand","right","left"],"イーブイ|たいあたり":["stand","supine","right","left"],"イーブイ|とっしん":["stand","supine"],"イーブイ|はねまわる":["stand","supine","prone","invert","right","left"],"イーブイ|ぜんりょくダッシュ":["stand","supine","prone"],"イーブイ|あまえる":["stand","supine","right","left"],"イーブイ|かみつく":["stand","right","left"],"イーブイ|ねころぶ":["supine","prone"],"ミュウ|ねんりき":["stand","right","left"],"ミュウ|サイケこうせん":["stand","invert"],"ミュウ|バリアー":["stand","supine"],"ミュウ|メモリースキップ":["stand","right","left"],"ミュウ|サイコショット":["stand","invert","supine","prone"],"ミュウ|サイコキネシス":["stand","supine","prone"],"ミュウ|リフレクション":["stand","right","left"],"ゲンガー|ガスでつつむ":["stand","right","left"],"ゲンガー|ホロウショット":["stand","supine","prone"],"ゲンガー|まっさかさま":["stand","right","left"],"ゲンガー|かげしばり":["stand","supine","right","left"],"ゲンガー|ヘドロばくだん":["stand","supine","right","left"],"ゲンガー|ファントムトリック":["stand","invert","supine","prone"],"ゲンガー|サイコウェーブ":["stand"],"ゲンガー|ナイトロック":["stand"],"メタグロス|ビーム":["stand","supine"],"メタグロス|しそくえんざん":["stand","supine","right","left"],"メタグロス|ワイドプレス":["right","left"],"メタグロス|コメットパンチ":["stand","supine"],"メタグロス|ストレートスタンプ":["stand","supine","prone"],"メタグロス|ベビーボンバー":["stand","right","left"],"メタグロス|だいばくはつ":["stand"],"メタグロス|こうてつのツメ":["stand"],"ルカリオ|キック":["stand","supine","prone"],"ルカリオ|はどうナックル":["stand","supine","prone"],"ルカリオ|はっけい":["stand","supine"],"ルカリオ|まわしげり":["stand","right","left"],"ルカリオ|オーラづき":["stand","supine","right","left"],"ルカリオ|はどうだん":["stand","supine","prone"],"ルカリオ|メタルクロー":["stand"],"ルカリオ|しんくうは":["stand"],"カイロス|しゅうちゅう":["stand","right","left"],"カイロス|たえる":["stand","supine","prone"],"カイロス|つのでたたく":["stand","right","left"],"カイロス|ハサミギロチン":["stand"],"カイロス|かわらわり":["stand","supine"],"カイロス|チャージばさみ":["stand","supine"],"カイロス|ぎゃくじょうスイング":["stand","right","left"],"カイロス|とつげき":["stand","supine"],"カイロス|ひっさつばさみ":["stand"],"カイロス|じごくぐるま":["stand","invert","supine","prone"],"イワーク|がんせきタックル":["stand","right","left"],"イワーク|いわおとし":["stand","supine"],"イワーク|ロックウォール":["stand","supine","right","left"],"イワーク|ハードインパクト":["stand","right","left"],"イワーク|ジャイロボール":["stand","supine","right","left"],"イワーク|ぶつかる":["stand","supine","prone"],"イワーク|いわなだれ":["stand","right","left"],"イワーク|ワイルドタックル":["stand","supine"],"イワーク|がんせきバリア":["stand","supine"],"イワーク|アイアンテール":["stand","right","left"],"フリーザー|アイスウイング":["stand","supine","right","left"],"フリーザー|いてつくやいば":["stand","right","left"],"フリーザー|ブリザードストーム":["stand","supine","right","left"],"フリーザー|エアカッター":["stand","supine"],"フリーザー|はねやすめ":["stand","right","left"],"フリーザー|フリーズダイブ":["stand","supine"],"フリーザー|アイスショット":["stand","right","left"],"フリーザー|コールドブレス":["stand","right","left"],"フリーザー|ぜったいれいど":["stand","supine"],"フリーザー|そらをとぶ":["stand","right","left"],"サンダー|でんじフラッシュ":["stand","supine"],"サンダー|でんきショック":["stand","supine","right","left"],"サンダー|ボルトラッシュ":["stand","right","left"],"サンダー|つばめがえし":["stand","supine"],"サンダー|バリバリウイング":["stand","right","left"],"サンダー|ダブルサンダー":["stand","supine","prone"],"サンダー|エレキアロー":["stand"],"サンダー|ほうでん":["stand","supine","prone"],"サンダー|サンダーチェイン":["stand","supine","prone"],"サンダー|そらをとぶ":["stand","right","left"],"ファイヤー|ほのおのつばさ":["stand","supine"],"ファイヤー|ねっぷう":["stand","right","left"],"ファイヤー|かえんほうしゃ":["stand","supine"],"ファイヤー|フレアドライブ":["stand","supine","prone"],"ファイヤー|ぼうふう":["stand"],"ファイヤー|ほのおのうず":["stand","supine"],"ファイヤー|ヒートブレス":["stand","supine"],"ファイヤー|もえつきる":["stand","left","right"],"ファイヤー|ウイングラッシュ":["stand","supine","right","left"],"ファイヤー|そらをとぶ":["stand","right","left"],"ベトベター|どくガス":["stand","right","left"],"ベトベター|ベトベトなげ":["stand","right","left"],"ベトベター|どくどくヒール":["stand","supine","right","left"],"ベトベター|ヘドロでかこむ":["stand","supine","prone"],"ベトベター|ベノムパンチ":["stand","supine"],"ベトベター|ベノムスリップ":[],"ベトベター|どくどくボンバー":["stand","supine","prone"],"ベトベター|ヘドロタックル":["stand","right","left"],"ベトベター|いやがらせベノム":["stand","right","left"]};
+const CORO_DEMERIT_MASTER={"フシギダネ|とつげき":["invert","prone"],"ヒトカゲ|かえんほうしゃ":["invert","prone","right","left"],"ヒトカゲ|フレイムアップ":["invert"],"ピカチュウ|10まんボルト":["invert","supine","prone"],"イーブイ|とっしん":["invert","prone"],"メタグロス|ベビーボンバー":["invert","supine","prone"],"カイロス|とつげき":["invert","prone"],"イワーク|ハードインパクト":["invert"],"イワーク|ワイルドタックル":["invert","prone","right","left"],"フリーザー|そらをとぶ":["supine","prone","invert"],"サンダー|そらをとぶ":["supine","prone","invert"],"ファイヤー|ほのおのつばさ":["right","left"],"ファイヤー|かえんほうしゃ":["invert","prone","right","left"],"ファイヤー|フレアドライブ":["invert","right","left"],"ファイヤー|ほのおのうず":["prone","invert","right","left"],"ファイヤー|ヒートブレス":["invert","prone"],"ファイヤー|もえつきる":["supine","prone","invert"],"ファイヤー|そらをとぶ":["supine","prone","invert"],"ベトベター|ヘドロタックル":["invert","supine","prone"]};
+function calcSuccessDirections(pokemon,moveName){
+ return [...(CORO_SUCCESS_MASTER[`${pokemon}|${moveName}`]||[])];
+}
+
+function calcCoroProbabilityMeta(pokemon,moveName){
+ const dirs=calcSuccessDirections(pokemon,moveName);
+ const special=CORO_SPECIAL_MASTER[`${pokemon}|${moveName}`]||null;
+ return {singleRollSuccess:dirs.length/6,successDirections:dirs,special};
+}
+
+function setCalcMode(mode){
+ calcProbabilityMode=mode;
+ document.querySelectorAll(".calc-mode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
+ updateCalc();
+}
+
+const CALC_ENERGIES=["草","炎","水","雷","悪","超","闘","鋼","空","無"];
+const CALC_FACE_OPTIONS=[
+ ENEKORO_MASTER.typesA,
+ ENEKORO_MASTER.typesB,
+ ENEKORO_MASTER.all,
+ ENEKORO_MASTER.all,
+ ENEKORO_MASTER.doubleFaces,
+ ENEKORO_MASTER.doubleFaces
+];
+let calcDice=[
+ ["草","悪","草","草","草/草","草/草"],
+ ["草","悪","草","草","草/草","草/草"],
+ ["草","悪","草","草","草/草","草/草"]
+];
+
+function calcMaster(){
+ // 図鑑で使っている配列を構造から取得
+ const candidates=[];
+ try{if(typeof DEX!=="undefined")candidates.push(DEX)}catch(_){}
+ try{if(typeof dexData!=="undefined")candidates.push(dexData)}catch(_){}
+ try{if(typeof pokedexData!=="undefined")candidates.push(pokedexData)}catch(_){}
+ try{if(typeof POKEDEX!=="undefined")candidates.push(POKEDEX)}catch(_){}
+ try{if(typeof pokedex!=="undefined")candidates.push(pokedex)}catch(_){}
+ return candidates.find(a=>Array.isArray(a)&&a.length>=15)||[];
+}
+function calcMoveParts(m){
+ if(Array.isArray(m)) return {name:m[0],req:String(m[1]||""),damage:m[2]===null?null:String(m[2]??"")};
+ return {name:m.name||"",req:String(m.required||m.cost||""),damage:m.damage===null?null:String(m.damage??m.baseDamage??"")};
+}
+function parseReq(x){
+ const a=[];
+ const t=String(x).replace(/\s/g,"");
+ // 配列由来の区切りにも対応
+ if(t.includes(",")) return t.split(",").filter(Boolean);
+ for(let i=0;i<t.length;){
+   let found=CALC_ENERGIES.find(e=>t.startsWith(e,i));
+   if(found){a.push(found);i+=found.length;continue}
+   if(t[i]==="×"){i++;while(/\d/.test(t[i]||""))i++;continue}
+   i++;
+ }
+ // 「草×4」のような表記
+ const mm=[...String(x).matchAll(/(草|炎|水|雷|悪|超|闘|鋼|空|無)×(\d+)/g)];
+ if(mm.length){a.length=0;mm.forEach(z=>{for(let k=0;k<+z[2];k++)a.push(z[1])})}
+ return a;
+}
+function faceTokens(face){return face==="FREE"?[]:String(face).split("/").filter(Boolean)}
+function meets(tokens,req){
+ const pool=[...tokens], specific=req.filter(x=>x!=="無"), wild=req.filter(x=>x==="無").length;
+ for(const e of specific){
+   const i=pool.indexOf(e); if(i<0)return false; pool.splice(i,1);
+ }
+ return pool.length>=wild;
+}
+function probabilityFor(indices,req){
+ let ok=0,total=Math.pow(6,indices.length);
+ const rec=(pos,tokens)=>{
+   if(pos===indices.length){if(meets(tokens,req))ok++;return}
+   for(const face of calcDice[indices[pos]])rec(pos+1,tokens.concat(faceTokens(face)));
+ };
+ rec(0,[]);
+ return ok/total;
+}
+function combosFor(n){
+ if(n===1)return [[0],[1],[2]];
+ if(n===2)return [[0,1],[0,2],[1,2]];
+ if(n===3)return [[0,1,2]];
+ if(n===4)return [[0,1,2,0],[0,1,2,1],[0,1,2,2]];
+ return [[0,1,2,0,0],[0,1,2,0,1],[0,1,2,0,2],[0,1,2,1,1],[0,1,2,1,2],[0,1,2,2,2]];
+}
+function maxProb(n,req){return Math.max(...combosFor(n).map(c=>probabilityFor(c,req)))}
+
+function calcFaceHtml(v){
+ if(String(v).includes("/")){
+  const [a,b]=String(v).split("/");
+  return `<span class="pairIcons">${typeIcon(a)}<span class="plusMini">＋</span>${typeIcon(b)}</span>`;
+ }
+ return typeIcon(v);
+}
+let calcPickerTarget=null;
+function calcFaceVisual(v){
+ if(String(v).includes("/")){
+  const [a,b]=String(v).split("/");
+  return `<span class="v18-diag"><span class="v18-tl">${typeIcon(a)}</span><span class="v18-slash">／</span><span class="v18-br">${typeIcon(b)}</span></span>`;
+ }
+ return typeIcon(v);
+}
+function renderCalcDice(){
+ document.getElementById("calcDice").innerHTML=`<div class="v18-dice">${calcDice.map((die,di)=>`
+ <div class="v18-die"><div class="v18-die-title">エネコロ ${di+1}</div><div class="v18-faces">${die.map((v,fi)=>`
+  <div class="v18-face" role="button" tabindex="0"
+       onclick="openV20FacePicker(${di},${fi})"
+       onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openV20FacePicker(${di},${fi})}">
+   <div class="v18-face-visual">${calcFaceVisual(v)}</div>
+  </div>`).join("")}</div></div>`).join("")}</div>`;
+}
+function defaultEnekoroTypeForPokemon(p){
+ if(!p)return "草";
+ if(p.name==="イーブイ")return "空";
+ return p.type==="無"?"空":p.type;
+}
+function makeDefaultCalcDie(target){
+ const a=ENEKORO_MASTER.typesA.includes(target)?target:ENEKORO_MASTER.typesA[0];
+ const b=ENEKORO_MASTER.typesB.includes(target)?target:ENEKORO_MASTER.typesB[0];
+ const double=ENEKORO_MASTER.doubleFaces.find(x=>x.split("/").includes(target))
+   || ENEKORO_MASTER.doubleFaces[0];
+ return [a,b,target,target,double,double];
+}
+function resetCalcDiceForPokemon(p){
+ const target=defaultEnekoroTypeForPokemon(p);
+ const d=makeDefaultCalcDie(target);
+ calcDice=[d.slice(),d.slice(),d.slice()];
+ renderCalcDice();
+}
+
+function moveOptionText(pokemon,raw){
+ const z=calcMoveParts(raw),fx=MOVE_FX[`${pokemon}|${z.name}`],parts=[z.name];
+ if(z.req)parts.push(`必要:${z.req}`);
+ parts.push(`基本:${z.damage===null||z.damage===""?"なし":z.damage}`);
+ if(fx&&fx.b)parts.push(fx.b);
+ if(fx)for(const row of (fx.r||[])){if(row&&row[1])parts.push(`${(row[0]||[]).map(d=>CORO_LABEL[d]||d).join("・")||"条件"}:${row[1]}`)}
+ return parts.join("｜");
+}
+function calcPokemonChanged(){
+ const p=calcMaster()[document.getElementById("calcPokemon").selectedIndex],moves=(p&&(p.moves||p.waza))||[];
+ for(let n=1;n<=4;n++){
+  const sel=document.getElementById(`calcMove${n}`);
+  sel.innerHTML=moves.map((m,i)=>`<option value="${i}">${moveOptionText(p.name,m)}</option>`).join("");
+  sel.selectedIndex=Math.min(n-1,Math.max(0,moves.length-1));
+ }
+ resetCalcDiceForPokemon(p);updateCalc();
+}
+function calcEffectSummary(pokemon,moveName){
+ const fx=MOVE_FX[`${pokemon}|${moveName}`]; if(!fx)return "追加効果なし";
+ const parts=[];
+ if(fx.b)parts.push(fx.b);
+ for(const row of (fx.r||[])) if(row&&row[1])parts.push(row[1]);
+ return [...new Set(parts)].join(" / ")||"追加効果なし";
+}
+
+let calcMovePickerSlot=null;
+
+const CORO_DETAIL_LABEL={stand:"立ち",invert:"逆立ち",supine:"あおむけ",prone:"うつぶせ",left:"左向き",right:"右向き"};
+function calcMoveEffectLines(pokemon,moveName){
+ const fx=MOVE_FX[`${pokemon}|${moveName}`]; if(!fx)return [];
+ const lines=[];
+ if(fx.b)lines.push(fx.b);
+ for(const row of (fx.r||[])){
+  if(!row||!row[1])continue;
+  const dirs=(row[0]||[]).map(d=>CORO_DETAIL_LABEL[d]||d).join("・");
+  lines.push(`${dirs}：${row[1]}`);
+ }
+ return lines;
+}
+
+function reqIconsHtml(req){return parseReq(req).map(t=>typeIcon(t)).join("")}
+function moveDetailHtml(pokemon,raw){
+ const z=calcMoveParts(raw),fx=MOVE_FX[`${pokemon}|${z.name}`],rows=[];
+ if(fx&&fx.b)rows.push(`<div class="v18-basefx">${fx.b}</div>`);
+ if(fx)for(const row of (fx.r||[])){
+  if(!row||!row[1])continue;
+  rows.push(`<div class="v18-fxrow"><span class="v18-poses">${(row[0]||[]).map(d=>poseIcon(d)).join("")}</span><span>${row[1]}</span></div>`);
+ }
+ return `<div class="v18-top"><span class="v18-req">必要：${reqIconsHtml(z.req)}</span><span>基本：${z.damage===null||z.damage===""?"なし":z.damage}</span></div>${rows.join("")}`;
+}
+function refreshMoveDetails(){
+ const p=calcMaster()[document.getElementById("calcPokemon").selectedIndex];if(!p)return;
+ const moves=(p.moves||p.waza)||[];
+ for(let slot=1;slot<=4;slot++){
+  const raw=moves[Number(document.getElementById(`calcMove${slot}`).value)||0];
+  document.getElementById(`calcMoveDetail${slot}`).innerHTML=raw?`<div class="v20-move-name">${calcMoveParts(raw).name}</div>${moveDetailHtml(p.name,raw)}`:"";
+ }
+}
+
+function coroDemeritDirections(pokemon,moveName){
+ return [...(CORO_DEMERIT_MASTER[`${pokemon}|${moveName}`]||[])];
+}
+function updateCalc(){
+ const master=calcMaster(),p=master[document.getElementById("calcPokemon").selectedIndex]; if(!p)return;
+ const moves=(p.moves||p.waza)||[], blocks=[];
+ for(let slot=1;slot<=4;slot++){
+  const sel=document.getElementById(`calcMove${slot}`),raw=moves[Number(sel.value)||0]; if(!raw)continue;
+  const z=calcMoveParts(raw),req=parseReq(z.req),dirs=calcSuccessDirections(p.name,z.name),cp=dirs.length/6;
+  const fxText=calcEffectSummary(p.name,z.name);
+  const fxBox=document.getElementById(`calcMoveFx${slot}`); if(fxBox)fxBox.textContent=fxText;
+  const cells=[];
+  for(let n=1;n<=5;n++){
+   const pe=maxProb(n,req); let v=pe;
+   if(calcProbabilityMode==="both")v=pe*cp;
+   if(calcProbabilityMode==="fail"){
+      const demeritRate=coroDemeritDirections(p.name,z.name).length/6;
+      v=pe*demeritRate;
+    }
+   const rateClass=v<0.5?"rate-low":v<0.75?"rate-mid":"rate-high";
+   cells.push(`<div class="calc-move-result-cell ${n===3?"main":""} ${rateClass}"><span>${n}個</span><b>${(v*100).toFixed(1)}%</b></div>`);
+  }
+  blocks.push(`<div class="calc-move-result"><div class="calc-move-result-name">${z.name}</div><div class="calc-move-result-row">${cells.join("")}</div></div>`);
+ }
+ document.getElementById("calcResults").innerHTML=blocks.join("");
+ document.getElementById("calcRequirement").textContent="4つのワザを同時比較";
+ document.getElementById("calcCoroInfo").textContent=calcProbabilityMode==="energy"?"エネコロ成功率":calcProbabilityMode==="both"?"エネコロ成功＋キャラコロ成功率":"エネコロ成功＋デメリット効果率";
+ refreshMoveDetails();
+}
+
+let v20MoveSlot=null;
+function openV20Picker(title,html){
+ document.getElementById("v20PickerTitle").textContent=title;
+ document.getElementById("v20PickerBody").innerHTML=html;
+ const bd=document.getElementById("v20PickerBackdrop");
+ bd.classList.add("open");bd.setAttribute("aria-hidden","false");
+}
+function closeV20Picker(){
+ const bd=document.getElementById("v20PickerBackdrop");
+ bd.classList.remove("open");bd.setAttribute("aria-hidden","true");
+}
+function openV20MovePicker(slot){
+ const p=calcMaster()[document.getElementById("calcPokemon").selectedIndex];if(!p)return;
+ const moves=(p.moves||p.waza)||[], sel=document.getElementById(`calcMove${slot}`);
+ v20MoveSlot=slot;
+ const used=new Set();
+ for(let n=1;n<=4;n++){
+  if(n===slot)continue;
+  const other=document.getElementById(`calcMove${n}`);
+  if(other && other.value!=="")used.add(Number(other.value));
+ }
+ const choices=moves.map((raw,i)=>({raw,i})).filter(x=>!used.has(x.i));
+ const html=`<div class="v20-move-options">${choices.map(({raw,i})=>`
+  <button type="button" class="v20-move-option ${Number(sel.value)===i?"selected":""}" onclick="chooseV20Move(${i})">
+   <div class="v20-move-name">${calcMoveParts(raw).name}</div>
+   ${moveDetailHtml(p.name,raw)}
+  </button>`).join("")}</div>`;
+ openV20Picker(`ワザ${slot}を選ぶ`,html);
+}
+function chooseV20Move(i){
+ if(v20MoveSlot==null)return;
+ const sel=document.getElementById(`calcMove${v20MoveSlot}`);
+ sel.value=String(i);
+ closeV20Picker();updateCalc();refreshMoveDetails();
+}
+function openV20FacePicker(di,fi){
+ const current=calcDice[di][fi], opts=CALC_FACE_OPTIONS[fi]||[];
+ const html=`<div class="v20-face-options">${opts.map((v,i)=>`
+  <button type="button" class="v20-face-option ${v===current?"selected":""}" onclick="chooseV20Face(${di},${fi},${i})">
+   <div class="v18-face-visual">${calcFaceVisual(v)}</div>
+  </button>`).join("")}</div>`;
+ openV20Picker(`エネコロ${di+1}・面${fi+1}を選ぶ`,html);
+}
+function chooseV20Face(di,fi,oi){
+ const opts=CALC_FACE_OPTIONS[fi]||[]; if(!opts[oi])return;
+ calcDice[di][fi]=opts[oi];
+ closeV20Picker();renderCalcDice();updateCalc();
+}
+
+function initCalculator(){
+ setTimeout(()=>{
+  for(let n=1;n<=4;n++){
+   const slot=document.getElementById(`calcMove${n}`)?.closest(".v18-move-slot");
+   if(slot){
+    slot.setAttribute("role","button");slot.setAttribute("tabindex","0");
+    slot.onclick=()=>openV20MovePicker(n);
+    slot.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openV20MovePicker(n)}};
+   }
+  }
+  const bd=document.getElementById("v20PickerBackdrop");
+  if(bd)bd.addEventListener("click",e=>{if(e.target===bd)closeV20Picker()});
+ },0);
+
+ const master=calcMaster(),sel=document.getElementById("calcPokemon");
+ if(!sel||sel.options.length)return;
+ sel.innerHTML=master.map((p,i)=>`<option value="${i}">${p.name}</option>`).join("");
+ sel.onchange=calcPokemonChanged;for(let n=1;n<=4;n++)document.getElementById(`calcMove${n}`).onchange=()=>{updateCalc();refreshMoveDetails();};
+ renderCalcDice();calcPokemonChanged();
+}
+
+function auditProbabilityMasters(){
+ const master=calcMaster(), issues=[];
+ for(const p of master){
+   for(const m of (p.moves||p.waza||[])){
+     const z=calcMoveParts(m), key=`${p.name}|${z.name}`;
+     if(!(key in CORO_SUCCESS_MASTER)) issues.push({key,type:"missing_coro_success"});
+     const succ=CORO_SUCCESS_MASTER[key]||[], bad=CORO_DEMERIT_MASTER[key]||[];
+     for(const d of bad) if(succ.includes(d)) issues.push({key,type:"success_demerit_overlap",direction:d});
+     const req=parseReq(z.req);
+     if(!req.length && z.req) issues.push({key,type:"unparsed_energy",value:z.req});
+   }
+ }
+ return issues;
+}
+
+function openCalculator(){
+ document.getElementById("meisterHome").style.display="none";
+ document.getElementById("entryTool").style.display="none";
+ document.getElementById("pokedexTool").style.display="none";
+ document.getElementById("calculatorTool").style.display="block";
+ initCalculator();scrollTo(0,0);
+}
+function backFromCalculator(){
+ document.getElementById("calculatorTool").style.display="none";
+ document.getElementById("meisterHome").style.display="block";scrollTo(0,0);
+}
+</script>
+<style id="calculator-v20-card-pickers">
+.v18-move-slot{position:relative;cursor:pointer}
+.v18-move-select{display:none!important}
+.v20-move-name{font-size:15px;font-weight:900;color:#123f68;margin-bottom:5px}
+.v20-picker-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:9998;display:none;align-items:flex-end;justify-content:center}
+.v20-picker-backdrop.open{display:flex}
+.v20-picker{width:min(100%,720px);max-height:82vh;background:#eef9ff;border-radius:22px 22px 0 0;padding:14px;overflow:auto;box-shadow:0 -8px 30px rgba(0,0,0,.25)}
+.v20-picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.v20-picker-title{font-size:18px;font-weight:900;color:#123f68}
+.v20-close{border:1.5px solid #8bcceb;background:white;border-radius:10px;padding:8px 12px;font-weight:800;color:#123f68}
+.v20-move-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.v20-move-option{border:2px solid #b9dff4;border-radius:14px;background:white;padding:10px;text-align:left;min-width:0;color:#123f68}
+.v20-move-option.selected{border-color:#139bd3;box-shadow:0 0 0 2px rgba(19,155,211,.12)}
+.v20-move-option .v20-move-name{font-size:16px}
+.v20-face-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.v20-face-option{position:relative;height:74px;border:2px solid #b9dff4;border-radius:14px;background:white;overflow:hidden}
+.v20-face-option.selected{border-color:#139bd3;box-shadow:0 0 0 2px rgba(19,155,211,.12)}
+.v20-face-option .v18-face-visual{pointer-events:none}
+.v18-face-select{display:none!important}
+.v18-face{cursor:pointer}
+@media(max-width:420px){
+ .v20-picker{padding:10px}
+ .v20-move-options{gap:6px}
+ .v20-move-option{padding:8px}
+ .v20-face-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .v20-face-option{height:64px}
+}
+</style>
+<div id="v20PickerBackdrop" class="v20-picker-backdrop" aria-hidden="true">
+ <div class="v20-picker" role="dialog" aria-modal="true">
+  <div class="v20-picker-head">
+   <div id="v20PickerTitle" class="v20-picker-title"></div>
+   <button type="button" class="v20-close" onclick="closeV20Picker()">閉じる</button>
+  </div>
+  <div id="v20PickerBody"></div>
+ </div>
+</div>
+
 </body></html>
 <style id="dex-vertical-center-fix">
 .dex-chip{
